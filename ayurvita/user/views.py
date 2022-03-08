@@ -40,7 +40,7 @@ def login(request):
         return redirect('home')
     else:
         if request.method == 'POST':
-            email = request.POST['email']
+            email = request.POST['emails']
             password = request.POST['password']
             
             user = auth.authenticate(username=email, password=password)
@@ -67,36 +67,40 @@ def login(request):
 def register(request):
     if request.user.is_authenticated:
         return redirect('home')
-    form = RegistrationForm()
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            first_name = form.cleaned_data['first_name']
-            request.session['first_name'] = first_name
-            last_name = form.cleaned_data['last_name']
-            request.session['last_name'] = last_name
-            phone_number = form.cleaned_data['phone_number']
-            email = form.cleaned_data['email']
-            request.session['email'] = email
-            password = form.cleaned_data['password']
-            request.session['password'] = password
-            username = form.cleaned_data['username']
-            request.session['username'] = username
-            request.session['phone_number'] = phone_number
-            city = form.cleaned_data['city']
-            request.session['city'] = city
-            state = form.cleaned_data['state']
-            request.session['state'] = state
-            otp_verify(phone_number)
-            messages.info(
-                request, 'you were registered then please verify phone number')
-            return redirect('otp')
+    else:
+        form = RegistrationForm()
+        if request.method == 'POST':
+            form = RegistrationForm(request.POST)
+            if form.is_valid():
+                first_name = form.cleaned_data['first_name']
+                request.session['first_name'] = first_name
+                last_name = form.cleaned_data['last_name']
+                request.session['last_name'] = last_name
+                phone_number = form.cleaned_data['phone_number']
+                email = form.cleaned_data['email']
+                request.session['email'] = email
+                password = form.cleaned_data['password']
+                request.session['password'] = password
+                username = form.cleaned_data['username']
+                request.session['username'] = username
+                request.session['phone_number'] = phone_number
+                city = form.cleaned_data['city']
+                request.session['city'] = city
+                state = form.cleaned_data['state']
+                request.session['state'] = state
+                otp_verify(phone_number)
+                messages.info(
+                    request, 'you were registered then please verify phone number')
+                return redirect('otp')
+            else:
+                messages.error(request, 'please enter a valid form')
+                form = RegistrationForm()
+                return redirect('register')
         else:
-            messages.error(request, 'please enter a valid form')
-    context = {
-        'form': form
-    }
-    return render(request, 'register.html', context)
+            context = {
+                'form': form
+            }
+            return render(request, 'register.html', context)
 
 
 def user_logout(request):

@@ -144,6 +144,10 @@ AWS_S3_CUSTOM_DOMAIN=config('AWS_S3_CUSTOM_DOMAIN')
 AWS_STATIC_LOCATION='static'
 AWS_MEDIA_LOCATION='media'
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 MEDIA_URL = "https://%s/%s/"%(AWS_S3_CUSTOM_DOMAIN,AWS_MEDIA_LOCATION)
 DEFAULT_FILE_STORAGE = 'ayurvita.storages.MediaStore'
 
