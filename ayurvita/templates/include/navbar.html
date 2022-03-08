@@ -1,0 +1,85 @@
+{% load static %}
+<header id="header" class=" p-2 position-fixed w-100 align-items-center" style="background-color: #ffffff;z-index:3;">
+    <div
+        class="container-fluid px-xl-17 px-lg-5 px-md-3 px-0 d-flex flex-wrap justify-content-between align-items-center">
+
+        <div class="col-4 p-0 col-sm-4 col-md-4 col-lg-4 static-block align-items-center">
+            <!-- mainHolder -->
+            <div class="mainHolder justify-content-center">
+                <!-- pageNav1 -->
+                <nav class="navbar" style="width:fit-conntent">
+                    <div >
+                        <a href="{% url 'home' %}"><img src="{% static 'images/IMAGE.svg' %}" 
+                                class="img-fluid"></a>
+                    </div>
+                </nav>
+                
+            </div>
+        </div>
+        <div class="nav-item text-decoration-none ">
+            <a class=" d-block" href="{%  url 'shop' %}">Store</a>
+        </div>
+        <div class="col-4 p-1 col-sm-3 col-lg-2 order-sm-3 order-md-0 ">
+            <!-- wishList -->
+            <ul class="nav nav-tabs wishList border-bottom-0 align-items-center">
+                <li class="nav-item text-decoration-none ">
+                    <div class="" style="display:flex">
+                        <div>
+                            <button type="button" class="btn icon-search" style="padding:0" id="search" onclick="show()"></button>
+                        </div>
+                        <div id="dropdown" style="display:none;background:#ffffff;width:100%">
+                            
+                            
+                            <form action="{% url 'search' %}" method="POST">
+                                {% csrf_token %}
+                            <div class=" align-items-center  p-0" style="display:flex"> 
+                                
+                                <input type="text" id="search" name="item" style="border:none;width:70%">
+                                
+                                <button type="" class="btn icon-search" style="padding:0"  onclick="show()"></button>
+                                
+                                        <span class="material-icons" onclick="hide()">
+                                            close
+                                            </span>
+                                        
+                                
+                                </div>
+                                {% for message in messages %}
+                                <p style="color:red">{{message}}</p>
+                                {% endfor %}
+                            </form>
+                        </div>
+                        
+                    </div>
+                </li>
+                <li id="cart" class="nav-item text-decoration-none "><a class="nav-link position-relative icon-cart"
+                        href="{% url 'cart_page' %}"></a></li>
+                <li id="wishlist" class="nav-item text-decoration-none "><a class="nav-link  " href="{% url 'wishlist_page' %}"><img
+                            class="filter-green" src="{% static 'images/icon-park-outline_like.svg' %}"
+                            style="height: 20px;margin-top: -5px;fill:red" alt="wishlist"></a></li>
+                <li id="profile" class="nav-item text-decoration-none "><a class="nav-link icon-profile"
+                        href="{%  url 'profile' %}"></a></li>
+
+            </ul>
+        </div>
+    </div>
+  
+</header>
+<script>
+    function show() {
+        document.getElementById("dropdown").style.display="block";
+        document.getElementById("cart").style.display="none";
+        document.getElementById("wishlist").style.display="none";
+        document.getElementById("profile").style.display="none";
+        document.getElementById("search").style.display="none";
+
+    }
+    function hide() {
+        document.getElementById("dropdown").style.display="none";
+        document.getElementById("cart").style.display="block";
+        document.getElementById("wishlist").style.display="block";
+        document.getElementById("profile").style.display="block";
+        document.getElementById("search").style.display="block";
+    }
+   
+</script>

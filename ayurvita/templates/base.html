@@ -1,0 +1,381 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayurvita</title>
+  <!-- <link rel="stylesheet" href="{% static 'css/profile.css"> -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.6.95/css/materialdesignicons.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700%7CRoboto:300,400,500,700,900&display=swap"
+    rel="stylesheet">
+  <!-- include the site bootstrap stylesheet -->
+  <link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+  <!-- include the site fontawesome stylesheet -->
+  <link type="text/css" rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
+  <!-- include the site stylesheet -->
+  <link type="text/css" rel="stylesheet" href="{% static 'style.css' %}">
+  <!-- include theme plugins setting stylesheet -->
+  <link type="text/css" rel="stylesheet" href="{% static 'css/plugins.css' %}">
+  <!-- include theme color setting stylesheet -->
+  <link type="text/css" rel="stylesheet" href="{% static 'css/color.css' %}">
+  <!-- include theme responsive setting stylesheet -->
+  <link type="text/css" rel="stylesheet" href="{% static 'css/responsive.css' %}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+  
+
+</head>
+</head>
+
+<body>
+  {% block user %}
+  <!-- content -->
+  {% endblock %}
+</body>
+<style>
+  body {
+    background-color: #ffffff
+  }
+
+  .padding {
+    padding: 3rem !important
+  }
+
+  .user-card-full {
+    overflow: hidden
+  }
+
+  .card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+    box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+    border: none;
+    margin-bottom: 30px
+  }
+
+  .m-r-0 {
+    margin-right: 0px
+  }
+
+  .m-l-0 {
+    margin-left: 0px
+  }
+
+  .user-card-full .user-profile {
+    border-radius: 5px 0 0 5px
+  }
+
+  .bg-c-lite-green {
+    background: linear-gradient(to right, #02801d, #fefefe)
+  }
+
+  .user-profile {
+    padding: 20px 0
+  }
+
+  .card-block {
+    padding: 1.25rem
+  }
+
+  .m-b-25 {
+    margin-bottom: 25px
+  }
+
+  .img-radius {
+    border-radius: 5px
+  }
+
+  h6 {
+    font-size: 14px
+  }
+
+  .card .card-block p {
+    line-height: 25px
+  }
+
+  @media only screen and (min-width: 1400px) {
+    p {
+      font-size: 14px
+    }
+  }
+
+  .card-block {
+    padding: 1.25rem
+  }
+
+  .b-b-default {
+    border-bottom: 1px solid #e0e0e0
+  }
+
+  .m-b-20 {
+    margin-bottom: 20px
+  }
+
+  .p-b-5 {
+    padding-bottom: 5px !important
+  }
+
+  .card .card-block p {
+    line-height: 25px
+  }
+
+  .m-b-10 {
+    margin-bottom: 10px
+  }
+
+  .text-muted {
+    color: #919aa3 !important
+  }
+
+  .b-b-default {
+    border-bottom: 1px solid #e0e0e0
+  }
+
+  .f-w-600 {
+    font-weight: 600
+  }
+
+  .m-b-20 {
+    margin-bottom: 20px
+  }
+
+  .m-t-40 {
+    margin-top: 20px
+  }
+
+  .p-b-5 {
+    padding-bottom: 5px !important
+  }
+
+  .m-b-10 {
+    margin-bottom: 10px
+  }
+
+  .m-t-40 {
+    margin-top: 20px
+  }
+
+  .user-card-full .social-link li {
+    display: inline-block
+  }
+
+  .user-card-full .social-link li a {
+    font-size: 20px;
+    margin: 0 10px 0 0;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out
+  }
+  label.error{
+    color: red;
+    margin:0px;
+  }
+</style>
+<!-- include jQuery library -->
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<!-- include bootstrap popper JavaScript -->
+<script src="{% static 'js/popper.min.js' %}"></script>
+<!-- include bootstrap JavaScript -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<!-- include custom JavaScript -->
+<script src="{% static 'js/jqueryCustome.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+<!-- <script src="https//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+  <script src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/additional-methods.js" ></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function () {
+      jQuery.validator.addMethod('myemail', function(value, element) 
+  {
+     return this.optional(element) || /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test( value );
+  })
+    $("#register").validate({
+      rules: {
+        first_name: {
+          lettersonly: true,
+          required: true,
+          minlength: 4,
+        },
+        last_name: {
+          lettersonly: true,
+          required: true,
+        },
+        username: {
+          required: true,
+          minlength: 4,
+        },
+        email: {
+          required: true,
+          myemail:true
+        }, 
+        phone_number: {
+          required: true,
+          minlength: 10,
+          maxlength: 10,
+          digits: true,
+        },
+        city: {
+          required: true,
+          minlength: 4,
+        }, 
+        state: {
+          required: true,
+          minlength: 4,
+        },
+        password1: {
+          required: true,
+          minlength: 4,
+        }, 
+        password2: {
+          required: true,
+          minlength: 4,
+        },
+
+       
+      },
+      messages: {
+        first_name: {
+          lettersonly:"No numbers accept in this field",
+          required: 'this field is required',
+          minlength: 'minimum 4',
+        },
+        last_name: {
+          required: "this field is required",
+         
+        },
+        username: {
+          required: 'this field is required',
+          minlength: 'minimum 4',
+        },
+        email: {
+          required: "this field is required",
+          myemail: 'Enter a valid email address',
+        },
+        phone_number: {
+          required: 'this field is required',
+          minlength: 'minimum 10',
+          maxlength:'maxlength 10'
+        },
+        city: {
+          required: "this field is required",
+          minlength: 'minimum 4',
+        },
+        state: {
+          required: 'this field is required',
+          minlength: 'minimum 4',
+        },
+        password1: {
+          required: "this field is required",
+          minlength: 'minimum 4',
+        },
+        password2: {
+          required: 'this field is required',
+          minlength: 'minimum 4',
+        },
+        
+      }
+
+    })
+  })
+</script>
+<script>
+  $(document).ready(function () {
+    $("#login").validate({
+      rules: {
+        username:{
+          required: true,
+          minlength: 4
+        },
+        password:{
+          required: true,
+          minlength: 4
+        }
+      },
+      messages: {
+        username: {
+          required:'this field is required',
+          minlength: 'minimum 4',
+        },
+        password: {
+          required:'this field is required',
+          minlength:'minimum 4'
+        }
+      }
+    })
+  })
+</script>
+<script>
+  $(document).ready(function () {
+    $("#edit").validate({
+      rules: {
+        username:{
+          required: true,
+          minlength: 4
+        },
+        password:{
+          required: true,
+          minlength: 4
+        }
+      },
+      messages: {
+        username: {
+          required:'this field is required',
+          minlength: 'minimum 4',
+        },
+        password: {
+          required:'this field is required',
+          minlength:'minimum 4'
+        }
+      }
+    })
+  })
+</script>
+{% for items in cart_item %}
+<script>
+	let quantity=0
+	$(document).ready(function () {
+		if(window.localStorage.getItem('{{request.user}}_{{items.product_name}}')){
+			quantity = window.localStorage.getItem('{{request.user}}_{{items.product_name}}');
+		}
+		else{
+			quantity = {{items.quantity}};
+		}
+		document.getElementById("{{request.user}}_{{items.product_name}}").value = quantity;
+		document.getElementById("{{request.user}}_{{items.product_name}}_price").innerHTML = quantity*{{items.product.get_mrp}};			
+		localStorage.setItem("{{request.user}}_{{items.product_name}}", quantity);
+		
+	})
+	
+	
+</script>
+{% endfor %}
+{% for items in cart_item %}
+<script>
+	function add_quantity_{{items.product_name}}(){
+		hi = sessionStorage.getItem("{{request.user}}_{{items.product_name}}");
+		alert(hi);		
+		quantity = localStorage.getItem("{{request.user}}_{{items.product_name}}");
+		quantity=parseInt(quantity)+1;
+		localStorage.setItem("{{request.user}}_{{items.product_name}}", quantity);
+		document.getElementById("{{request.user}}_{{items.product_name}}").value = quantity;	
+		document.getElementById("{{request.user}}_{{items.product_name}}_price").innerHTML = quantity*{{items.product.get_mrp}};		
+	}
+	function remove_quantity_{{items.product_name}}(){
+		quantity = localStorage.getItem("{{request.user}}_{{items.product_name}}");
+		quantity=quantity-1;
+		localStorage.setItem("{{request.user}}_{{items.product_name}}", quantity);	
+		document.getElementById("{{request.user}}_{{items.product_name}}").value = quantity;	
+		document.getElementById("{{request.user}}_{{items.product_name}}_price").innerHTML = quantity*{{items.product.get_mrp}};		
+	}
+</script>
+{% endfor %}
+
+
+</html>

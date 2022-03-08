@@ -1,0 +1,17 @@
+
+
+
+
+          {% for message in messages %}
+          <script> 
+            import Swal from 'sweetalert2'  
+               Swal.fire({
+                position: 'middle',
+                icon: '{{ message.tags }}',
+                title: '{{ message }} jkhkhk',
+                showConfirmButton: false,
+                
+              })
+          </script>
+          {% endfor %}
+

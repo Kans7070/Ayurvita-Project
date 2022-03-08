@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block user %}
+<!-- pageHeader -->
+<header id="header" class="pt-1 ">
+  <div style="justify-content: space-between;padding: 10px;height:fit-content;align-items: center;"
+    class="container-fluid d-flex ">
+    <div style="height: 60px;">
+      <a href="{% url 'login' %}">
+        <img style="margin-bottom: -20px" src="{% static 'images/IMAGE.svg'%}" alt="Botanical" class="img-fluid">
+      </a>
+    </div>
+    <div>
+      <a style="text-decoration: none;float: right;" href="{% url 'register' %}">Register</a>
+    </div>
+  </div>
+</header>
+
+<div id='primary' class="wrapper " style="margin: 0px auto">
+  <div id="">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <div style="">
+        <h1>Log-In</h1>
+      </div>
+    </div>
+
+    <!-- Login Form -->
+    <form class="col-12 col-md-12 p-5 " id="login" action="{% url 'login' %} " method="POST" style="background:#f4f4f4;">
+      {% csrf_token %}
+      <div class="row justify-content-center">
+        <div class="container">
+          <div class="container text-center">
+            
+            
+            
+            <input type="text" id="email" class="form-control textinput textInput mb-3 col-8" name="email"
+              placeholder="Username" style="margin:0px auto">
+            <input type="password" id="password" class="form-control textinput textInput col-8" name="password"
+              placeholder="password"  style="margin:0px auto">
+            <div style="width: 93%;height: 20px;">
+              <a style="float: right;" class="underlineHover mb-3" href="{% url 'change_password_mobile' %}">Forgot Password?</a>
+            </div>
+            {% for x in messages %}
+            <h3 class="text-danger col-8">{{x}}</h3>
+            {% endfor %}
+            <div style="width: 100%;">
+                <input type="submit" class="col-10 mb-2" value="Log In" style="background:#5ba515;color:white">
+            </div>
+          </div>
+          </div>
+        
+      </div>
+
+    </form>
+
+    <!-- Remind Passowrd -->
+
+
+  </div>
+</div>
+
+        </div>
+
+<!-- Remind Passowrd -->
+</div>  
+
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block user %}
+	<!-- pageWrapper -->
+	<div id="pageWrapper">
+		<!-- header -->
+		{% include "include/navbar.html" %}
+		<main>
+			<!-- introBannerHolder -->
+			<section class="introBannerHolder d-flex w-100 bgCover" style="background-image: url(http://placehold.it/1920x300);">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 pt-lg-23 pt-md-15 pt-sm-10 pt-6 text-center">
+							<h1 class="headingIV fwEbold playfair mb-4">My Cart</h1>
+							<ul class="list-unstyled breadCrumbs d-flex justify-content-center">
+								<li class="mr-sm-2 mr-1"><a href="{% url 'home' %}">Home</a></li>
+								<li class="mr-sm-2 mr-1">/</li>
+								<li class="mr-sm-2 mr-1"><a href="{% url 'shop' %}">Shop</a></li>
+								<li class="mr-sm-2 mr-1">/</li>
+								<li class="active">My Cart</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- cartHolder -->
+			<div class="cartHolder container pt-xl-21 pb-xl-24 py-lg-20 py-md-16 py-10">
+				<div class="row">
+					<!-- table-responsive -->
+					<div class="col-12 table-responsive mb-xl-22 mb-lg-20 mb-md-16 mb-10">
+						<!-- cartTable -->
+						<table class="table cartTable">
+							<thead>
+								<tr class='text-center'>
+									<th scope="col" class="text-uppercase fwEbold border-top-0">product</th>
+									<th scope="col" class="text-uppercase fwEbold border-top-0">product name</th>
+									<th scope="col" class="text-uppercase fwEbold border-top-0">price</th>
+									<th scope="col" class="text-uppercase fwEbold border-top-0">quantity</th>
+									<th scope="col" class="text-uppercase fwEbold border-top-0">total</th>
+									
+
+								</tr>
+							</thead>
+							<tbody>
+								{% for items in cart_item %}
+								<tr class="align-items-center text-center">
+									<td class="d-flex align-items-center border-top-0 border-bottom px-0 py-6 justify-content-center">
+										<div class="imgHolder">
+											<a href="{% url 'shop_detail' items.product.id %}"><img src="{{items.product.product_image1.url}}" alt="image description" class="img-fluid"></a>
+										</div>
+										<span class="title pl-2"></span>
+									</td>
+									<td class="fwEbold border-top-0 border-bottom px-0 py-6">{{items.product.product_name}}</td>
+									{% if items.product.mrp < items.product.product_price %}
+									<td class="fwEbold border-top-0 border-bottom px-0 py-6"><sup><del class="mr-2 text-danger" >{{items.product.product_price}}</del></sup>{{items.product.mrp}} <sub class="text-success">{{items.product.get_offer}}%-off</sub></td>
+									
+									{% else %}
+									<td class="fwEbold border-top-0 border-bottom px-0 py-6">{{items.product.product_price}}</td>
+									{% endif %}
+
+
+									<td class="border-top-0 border-bottom px-0 py-6">
+										<div class=""> <button type="button" onclick="remove_quantity_{{items.product_name}}()"
+												class="mr-2">-</button>
+												<input value="5" name="{{request.user.email}}_{{items.product_name}}" class="form-control mr-2 "
+												disabled style='width:25%;text-align: center;background-color:rgba(0,0,0,0) !important;border:none !important;'>
+												<button
+												type="button"
+												onclick="add_quantity_{{items.product_name}}()">+</button> 
+											</div>
+											</td>
+	
+									<td class="fwEbold border-top-0 border-bottom px-0 py-6">{{ items.sub_total }} <a href="{% url 'remove_cart' items.product.id %}" class="fas fa-times float-right"></a></td>
+								</tr>
+								{% endfor %}
+								
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row">
+					
+					<!-- <div class="col-12 col-md-6">
+						<form action="javascript:void(0);" class="couponForm mb-md-0 mb-5">
+							<fieldset>
+								<div class="mt-holder d-inline-block align-bottom mr-lg-5 mr-0 mb-lg-0 mb-2">
+									<label for="code" class="fwEbold text-uppercase d-block mb-1">promo code</label>
+									<input type="text" id="code" class="form-control">
+								</div>
+								<button type="submit" class="btn btnTheme btnCart fwEbold text-center text-white md-round py-3 px-4 py-md-3 px-md-4">Apply</button>
+							</fieldset>
+						</form>
+					</div> -->
+					<div class="col-12 col-md-6">
+						<div class="d-flex justify-content-between">
+							<strong class="txt fwEbold text-uppercase mb-1">subtotal</strong>
+							<strong class="price fwEbold text-uppercase mb-1">{{sum}}</strong>
+						</div>
+						<a href="{% url 'cart_checkout'  %}" class="btn " style="background:blue">Proceed to checkout</a>
+						{% for message in messages %}
+						<p style="color:red">{{message}}</p>
+						{% endfor %}
+
+					</div>
+				</div>
+			</div>
+			
+		</main>
+		
+	</div>
+	{% endblock %}

@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% load static %}
+
+{% block user %}
+<!-- pageHeader -->
+{% include "include/navbar.html" %}
+    <div class="row"></div>
+    <div class="container d-lg-flex">
+        <div class="box-1 bg-light user">
+            
+            <div class="box-inner-1 pb-3 mb-3 ">
+                <div class="d-flex justify-content-between mb-3 userdetails">
+                    <p class="fw-bold"></p>
+                    <p class="fw-lighter"><span class="fas fa-dollar-sign"></span></p>
+                </div>
+                <div class="col-sm-8" style="width:fit-content;margin:0px auto">
+                    <div class="card-block" >
+                        <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Add a shipping address</h6>
+                        <form action="{% url 'address_checkout' %}" method="POST">
+                            {% csrf_token %}
+                            {% if selected_address %}
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <p class="m-b-10 ">Name:</p>
+                                        <input type="text" class="form-control" value="{{ selected_address.name }}">
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <p class="m-b-10 ">Phone No:</p>
+                                        <input type="text" class="form-control" value="{{ selected_address.phone }}">
+                                        
+                                    </div>
+
+
+
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <p class="m-b-10 ">label as:</p>
+                                        <input type="text" class="form-control" value="{{ selected_address.labelled_as }}">
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <p class="m-b-10 ">Pin Code:</p>
+                                        <input type="text" class="form-control" value="{{ selected_address.pin_code }}">
+
+                                    </div>
+
+
+
+                                    <div class="col-12 mb-2">
+                                        <p class="m-b-10 f-w-600">address:</p>
+                                        <textarea  class="form-control col-12" >{{ selected_address.address }}</textarea>
+
+                                    </div>
+                                    {% for message in messages %}
+                                    <div class="col-12 mb-2 text-danger">
+                                        <p class="m-b-10 f-w-600">{{message}}:</p>
+
+                                    </div>
+                                    {% endfor %}
+
+                                    
+
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <p class="m-b-10 ">Name:</p>
+                                        {{form.name}}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <p class="m-b-10 ">Phone No:</p>
+                                        {{form.phone}}
+                                    </div>
+
+
+
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <p class="m-b-10 ">label as:</p>
+                                        {{form.labelled_as}}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <p class="m-b-10 ">Pin Code:</p>
+                                        {{form.pin_code}}
+                                    </div>
+
+
+
+                                    <div class="col-12 mb-2">
+                                        <p class="m-b-10 f-w-600">address:</p>
+                                        {{form.address}}
+                                    </div>
+                                    {% for message in messages %}
+                                    <div class="col-12 mb-2 text-danger">
+                                        <p class="m-b-10 f-w-600">{{message}}:</p>
+
+                                    </div>
+                                    {% endfor %}
+
+                                    <div class="col-12 mt-3">
+                                        <div style="width:fit-content;margin:0px auto;">
+                                            <input type="submit" value="Submit" class="btn btn-primary">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-2" style="padding-top:100px">
+            <div class="box-inner-2">
+                <div>
+                    <p class="fw-bold">Payment Details</p>
+                    <p class="dis mb-3">Complete your purchase by providing your payment details</p>
+                </div>
+                <form action="">
+                    
+                    <div>
+                        
+                        
+                        <div class="address ">
+                            <p class="dis fw-bold mb-3">Billing address</p>
+                                
+                                <div class="dropdown mb-2">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      Address
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        {% if addresses %}
+                                        {% for address in addresses %}
+                                        <a class="dropdown-item" href="{% url 'address_checkout_with_id' address.id %} ">{{address.address}},{{address.pin_code}}</a>
+                                        {% endfor %}
+                                        {% else %}
+                                        <a class="dropdown-item" href="#">No address available</a>                                 
+                                        {% endif %}
+                                    </div>
+                                  </div>
+                                
+                           
+                            
+                            
+
+                            <div class="d-flex flex-column dis">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <p>Product</p>
+                                    <p>Brand</p>
+                                    <p>Quantity</p>
+
+                                    <p class="mb-2" >Price</p>
+                                </div>
+                                {% if buynow %}
+                                
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <p>{{product.product_name}}</p>
+                                    <p><span class=""></span>{{product.brand}}</p>
+                                    <p><span class=""></span>{{quantity}}</p>
+                                    {% if buynow %}
+                                    <p class="mb-2" ><span class="fas "></span>{{sum}}</p>
+                                    {% else %}
+                                    <p class="mb-2" ><span class="fas "></span>{{sub_total}}</p>
+                                    {% endif %}
+                                </div>
+                                
+                                {% else %}
+                                {% for item in cart_item %}
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <p>{{item.product.product_name}}</p>
+                                    <p><span class=""></span>{{item.product.brand}}</p>
+                                    <p><span class=""></span>{{item.quantity}}</p>
+                                    <p class="mb-2" ><span class="fas "></span>{{item.sub_total}}</p>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <p class="">Total</p>
+                                    <p class=""><span class="fas"></span>{{sum}}</p>
+                                </div>
+                                {% if address_bool %}
+                                <button id="rzp-button1">Pay:{{sum}} </button>
+                                {% else %}
+                                <div class="btn  mt-2" ><a href="{% url 'pay' %}">Pay</a> <span class="fas"></span>{{sum}} </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "{{key}}", // Enter the Key ID generated from the Dashboard
+    "amount": "{{amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Acme Corp",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": "{{payment_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 2
+    "handler": function (response){
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert("order placed");
+        window.location.replace("{% url 'pay' %}")
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+   
+        
+{% endblock %}

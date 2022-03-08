@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block user %}
+<!-- includes/header.html -->
+{% include "include/navbar.html" %}
+<section class="" style="margin-top:80px">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <!--   SIDEBAR   -->
+                <ul class="list-group mt-5">
+                    <a class="list-group-item " href="{% url 'profile' %}"> Profile </a>
+                    <a class="list-group-item" href="{% url 'my_orders' %}"> My order</a>
+                    <a class="list-group-item" href="{% url 'change_password_profile' user.id  %}"> Change Password </a>
+                    <a class="list-group-item active" href="{% url 'address' %}"> Address Management </a>
+                    
+
+                </ul>
+                <br>
+                <a class="btn btn-danger btn-block mb-4 " href="{% url	 'user_logout'   %}"> <i
+                        class="fa fa-power-off"></i> <span class="text">Logout</span> </a> <!--   SIDEBAR .//END   -->
+            </div>
+            <div class="col-lg-9 col-md-9">
+                <div class="card user-card-full">
+                    <div class="row m-l-0 m-r-0">
+                        <div class="col-sm-4 bg-c-lite-green user-profile">
+                            <div class="card-block text-center text-white">
+                                {% if user.profile_img %}
+                                <div class="m-b-25"> <img src="{{user.profile_img.url}}" width="25%" class="img-radius"
+                                        alt="User-Profile-Image"> </div>
+                                {% else %}
+                                <div class="m-b-25"> <img
+                                        src="http://naikenviro.net/wp-content/uploads/2018/06/null.jpg" width="25%"
+                                        class="img-radius" alt="User-Profile-Image"> </div>
+                                {% endif %}
+                                <h4 class="f-w-600">{{ user.username }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-sm-8" style="width:fit-content">
+                            <div class="card-block">
+                                <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Add a shipping address</h6>
+                                <form action="{% url 'address' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 mb-2">
+                                                <p class="m-b-10 ">Name:</p>
+                                                {{form.name}}
+                                            </div>
+                                            <div class="col-12 col-md-6 mb-2">
+                                                <p class="m-b-10 ">Phone No:</p>
+                                                {{form.phone}}
+                                            </div>
+
+
+
+                                            <div class="col-12 col-md-6 mb-2">
+                                                <p class="m-b-10 ">label as:</p>
+                                                {{form.labelled_as}}
+                                            </div>
+                                            <div class="col-12 col-md-6 mb-2">
+                                                <p class="m-b-10 ">Pin Code:</p>
+                                                {{form.pin_code}}
+                                            </div>
+
+
+
+                                            <div class="col-12 mb-2">
+                                                <p class="m-b-10 f-w-600">address:</p>
+                                                {{form.address}}
+                                            </div>
+                                            {% for message in messages %}
+                                            <div class="col-12 mb-2 text-danger">
+                                                <p class="m-b-10 f-w-600">{{message}}:</p>
+
+                                            </div>
+                                            {% endfor %}
+
+                                            <div class="col-12 mt-3">
+                                                <div style="width:fit-content;margin:0px auto;">
+                                                    <input type="submit" value="Submit" class="btn btn-primary">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-12">
+                <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade  active show" id="addresses" role="tabpanel"
+                            aria-labelledby="addresses-tab">
+                            <h4 class="font-weight-bold mt-0 mb-4">Manage Addresses</h4>
+                            <div class="row">
+                                {% for address in addresses %}
+                                <div class="col-12 col-sm-6">
+                                    <div class="bg-white card addresses-item mb-4 border border-primary shadow">
+                                        <div class="gold-members p-4">
+                                            <div class="media">
+                                                <div class="mr-3"><i class="icofont-ui-home icofont-3x"></i></div>
+                                                <div class="media-body">
+                                                    <h6 class="mb-1 text-secondary">{{address.labelled_as}}</h6>
+                                                    <h6 class="mb-1 text-secondary">{{address.name}} : {{address.phone}}
+                                                    </h6>
+
+                                                    <p class="text-black">{{address.address}}, {{address.pin_code}}
+                                                    </p>
+                                                    <p class="mb-0 text-black font-weight-bold">
+                                                    <a class="text-primary mr-3" data-toggle="modal" data-target="#add-address-modal" href="#"><i class="icofont-ui-edit"></i> EDIT</a> 
+                                                    <a class="text-danger" href="{% url 'delete_address' address.id %}"><i class="icofont-ui-delete"></i> DELETE</a></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div> <!-- row.// -->
+    </div>
+
+</section>
+
+
+{% endblock %}

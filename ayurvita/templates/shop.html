@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block user %}
+	<!-- pageWrapper -->
+	<div id="pageWrapper">
+		<!-- header -->
+		{% include "include/navbar.html" %}
+		<!-- main -->
+		<main style='margin:60px 0px 0px 0px'>
+			<!-- introBannerHolder -->
+			{% for x in welcome %}
+			<section class="introBannerHolder d-flex" style="background-image: url('{{x.welcome_image1.url}}');background-size: 100%;background-repeat: no-repeat; ">
+				{% endfor %}
+				<div class="container">
+					<div class="row">
+						<div class="pt-10 col-10 text-center" style="margin:0px auto">
+							<h1 class="headingIV fwEbold playfair mb-4">Shop</h1>
+							<ul class="list-unstyled breadCrumbs d-flex justify-content-center">
+								<li class="mr-2"><a href="{% url 'home'%}">Home</a></li>
+								<li class="mr-2">/</li>
+								<li class="active">Shop</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- twoColumns -->
+			<div class="twoColumns container pb-lg-20 pb-md-4 pb-4">
+				<div class="row">
+					<div class="col-12 col-lg-9 order-lg-3">
+						<!-- content -->
+						<article id="content">
+							<!-- show-head -->
+							<header class="show-head d-flex flex-wrap justify-content-between mb-7">
+								
+								<!-- sortGroup -->
+								<div class="sortGroup">
+									<div class="d-flex flex-nowrap align-items-center">
+										<strong class="groupTitle mr-2">Sort by:</strong>
+										<div class="dropdown">
+											{% if high_low %}
+											<button class="dropdown-toggle buttonReset" type="button" id="sortGroup" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">price high to low</button>
+											{% elif low_high %}
+											<button class="dropdown-toggle buttonReset" type="button" id="sortGroup" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">price low to high</button>
+											{% else %}
+											<button class="dropdown-toggle buttonReset" type="button" id="sortGroup" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Default sorting</button>
+											{% endif %}
+											<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sortGroup">
+												<li><a href="{% url 'price_low_to_high' %}">price low to high</a></li>
+												<li><a href="{% url 'price_high_to_low' %}">price high to low</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</header>
+							<div class="row">
+								<!-- featureCol -->
+								{% for product in products %}
+								<div class="col-6 col-sm-6 col-lg-4 featureCol mb-7">
+									
+									<div class="border"  >
+										<div class="imgHolder position-relative  overflow-hidden">
+											<img src="{{product.product_image1.url}}" alt="image description" class="img-fluid " style='height:270px;width:auto'>
+											<ul class="list-unstyled postHoverLinskList d-flex justify-content-center m-0">
+												<li class="mr-2 overflow-hidden">
+												{% if wishlist_item %}
+												{% for items in wishlist_item %}
+												{% if items.product.id == product.id%}
+												<a href="{% url 'remove_wishlist' product.id %}" style="height:32px;padding-top: 6px;">
+													<img src="{% static 'images/favorite_black_18dp.svg'%}" alt="" style="height:16px;width: 16px;">
+												</a>
+												
+												{% else %}
+												<a href="{% url 'add_to_wishlist' product.id %}" class="icon-heart d-block"> 
+												</a>
+												{% endif %}
+
+												{% endfor %}
+												{% else %}
+												
+													<a href="{% url 'add_to_wishlist' product.id %}" class="icon-heart d-block"> 
+													</a>
+												{% endif %}
+												</li>
+												<li class="mr-2 overflow-hidden"><a href="{% url 'add_to_cart' product.id %}" class="icon-cart d-block"></a></li>
+												<li class="mr-2 overflow-hidden"><a href="{% url 'shop_detail' product.id %}" class="icon-eye d-block"></a></li>
+												<li class="overflow-hidden"><a href="javascript:void(0);" class="icon-arrow d-block"></a></li>
+											</ul>
+										</div>
+										<div class="text-center py-5 px-4">
+											<span class="title d-block mb-2"><a href="{% url 'shop_detail' product.id %}">{{product.product_name}}</a></span>
+											<span class="price d-block fwEbold"><del></del>{{product.get_mrp}}
+											{% if product.get_offer %}
+											- {{product.get_offer}}% off
+											{% else %}
+											{% endif %}
+											</span>
+
+											
+											<span class="hotOffer fwEbold text-uppercase text-white position-absolute d-block">HOT</span>
+											
+										</div>
+									</div>
+								</div>
+								
+								{% endfor %}
+								
+								
+							</div>
+						</article>
+					</div>
+					<div class="col-12 col-lg-3 order-lg-1">
+						<!-- sidebar -->
+						<aside id="sidebar">
+							<!-- widget -->
+							
+							<!-- widget -->
+							<section class="widget overflow-hidden mb-9">
+								<h3 class="headingVII fwEbold text-uppercase mb-5">PRODUCT CATEGORIES</h3>
+								<table class="table">
+								  <thead class="thead-dark">
+									<tr>
+									  <th scope="col">Category</th>
+									  <th scope="col">No:of Products</th>											
+									</tr>
+								  </thead>
+								  <ul class="list-unstyled categoryList mb-0">									
+									  <tbody>
+										  <tr>
+											  {% for categories in category %}								
+											<td>{{categories.category_name}}</td>
+											<td>{{categories.product_count}}</td>											
+										  </tr>										 
+										  {% endfor %}
+										</tbody>
+									  </table>
+								</ul>								
+							</section>
+							<!-- widget -->
+							<!-- <section class="widget mb-9">
+								<h3 class="headingVII fwEbold text-uppercase mb-6">Filter by price</h3> -->
+								<!-- filter ranger form -->
+								<!-- <form action="javascript:void(0);" class="filter-ranger-form">
+									<div id="slider-range"></div>
+									<input type="hidden" id="amount1" name="amount1">
+									<input type="hidden" id="amount2" name="amount2">
+									<div class="get-results-wrap d-flex align-items-center justify-content-between">
+										<button type="button" class="btn btnTheme btn-shop fwEbold md-round px-3 pt-1 pb-2 text-uppercase">Filter</button>
+										<p id="amount" class="mb-0"></p>
+									</div>
+								</form> -->
+							<!-- </section> -->
+							<!-- widget -->
+							
+							<!-- widget -->
+							
+						</aside>
+					</div>
+				</div>
+			</div>
+			
+			
+		</main>
+		
+	</div>
+	{% endblock %}

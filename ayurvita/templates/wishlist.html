@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block user %}
+	<!-- pageWrapper -->
+	<div id="pageWrapper">
+		<!-- header -->
+		{% include "include/navbar.html" %}
+		<main>
+			<!-- introBannerHolder -->
+			<section class="introBannerHolder d-flex w-100 bgCover" style="background-image: url(http://placehold.it/1920x300);">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 pt-lg-23 pt-md-15 pt-sm-10 pt-6 text-center">
+							<h1 class="headingIV fwEbold playfair mb-4">My WishList</h1>
+							<ul class="list-unstyled breadCrumbs d-flex justify-content-center">
+								<li class="mr-sm-2 mr-1"><a href="{% url 'home' %}">Home</a></li>
+								<li class="mr-sm-2 mr-1">/</li>
+								<li class="mr-sm-2 mr-1"><a href="{% url 'shop' %}">Shop</a></li>
+								<li class="mr-sm-2 mr-1">/</li>
+								<li class="active">My WishList</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- cartHolder -->
+			<div class="cartHolder container pt-xl-21 pb-xl-24 py-lg-20 py-md-16 py-10">
+				<div class="row">
+					<!-- table-responsive -->
+					<div class="col-12 table-responsive mb-xl-22 mb-lg-20 mb-md-16 mb-10">
+						<!-- cartTable -->
+						<table class="table cartTable">
+							<thead>
+								<tr class='text-center'>
+									<th scope="col" class="text-uppercase fwEbold border-top-0">product</th>
+									<th scope="col" class="text-uppercase fwEbold border-top-0">name</th>
+									<th scope="col" class="text-uppercase fwEbold border-top-0">price</th>
+									<th scope="col" class="text-uppercase fwEbold border-top-0"></th>
+									<th scope="col" class="text-uppercase fwEbold border-top-0"></th>
+									
+								</tr>
+							</thead>
+							<tbody>
+								{% for items in wishlist_item %}
+								<tr class="align-items-center text-center">
+									<td class="d-flex align-items-center border-top-0 border-bottom px-0 py-6 justify-content-center">
+										<div class="imgHolder">
+											<a href="{% url 'shop_detail' items.product.id %}"><img src="{{items.product.product_image1.url}}" alt="image description" class="img-fluid"></a>
+										</div>
+										<span class="title pl-2"></span>
+									</td>
+									<td class="fwEbold border-top-0 border-bottom px-0 py-6">{{items.product.product_name}}</td>
+									<td class="fwEbold border-top-0 border-bottom px-0 py-6 ">{{items.product.product_price}}
+									</td>
+									<td class="fwEbold border-top-0 border-bottom px-0 py-6 ">
+										<a href="{% url 'add_to_cart' items.product.id %}" class="">add to cart</a>
+									</td>
+									<td class="fwEbold border-top-0 border-bottom px-0 py-6 ">
+										<a href="{% url 'remove_wishlist' items.product.id %}" class="fas fa-times"></a>	
+									</td>
+								</tr>
+								{% endfor %}
+								
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row">
+					
+					<!-- <div class="col-12 col-md-6">
+						<form action="javascript:void(0);" class="couponForm mb-md-0 mb-5">
+							<fieldset>
+								<div class="mt-holder d-inline-block align-bottom mr-lg-5 mr-0 mb-lg-0 mb-2">
+									<label for="code" class="fwEbold text-uppercase d-block mb-1">promo code</label>
+									<input type="text" id="code" class="form-control">
+								</div>
+								<button type="submit" class="btn btnTheme btnCart fwEbold text-center text-white md-round py-3 px-4 py-md-3 px-md-4">Apply</button>
+							</fieldset>
+						</form>
+					</div> -->
+					
+				</div>
+			</div>
+			
+		</main>
+		
+	</div>
+	{% endblock %}

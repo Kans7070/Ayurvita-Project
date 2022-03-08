@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block user %}
+<!-- pageWrapper -->
+<div id="pageWrapper">
+	<!-- pageHeader -->
+	{% include "include/navbar.html" %}
+	
+	<main>
+		<!-- introBlock -->
+		<section class="introBlock ">
+			<div class="container-fluid ">
+				<!-- holder -->
+				<div class="holder  pt-0  row" style="background-color: #F5F5F5;">
+					<!-- py-12 pt-lg-30 pb-lg-25 -->
+
+					<div class="col-12 col-md-6 col-lg-7 col-xl-7" >
+						<div class="txtwrap ">
+							<span class="title d-block text-uppercase fwEbold  pl-2 mb-lg-5 mb-sm-3 mb-1">welcome to
+								Ayurvita</span>
+							<h2 class="fwEbold  mb-xl-7 mb-lg-5">Medicine from nature</h2>
+							<p class="mb-xl-15 mb-lg-10">Lorem ipsum is simply dummy text of the printing and
+								typesetting industry.</p>
+							<a href="{%  url 'shop' %}"
+								class="btn btnTheme btnShop fwEbold text-white md-round py-2 px-3 py-md-3 px-md-4">Shop
+								Now <i class="fas fa-arrow-right ml-2"></i></a>
+						</div>
+					</div>
+					<div class="col-12 col-md-5 col-xl-5" >
+						<div class="imgHolder ">
+							<img style="max-height: 411px;" src="{% static 'images/banner2.jpg' %}" alt="image description"
+								class="img-fluid w-100">
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+			
+		</section>
+
+		<!-- featureSec -->
+		<div>
+			<section
+				class="featureSec container-fluid overflow-hidden ">
+				<!-- mainHeader -->
+				<header class="col-12 mainHeader mb-7 text-center">
+					<h1 class="headingIV playfair fwEblod mb-4">Featured Product</h1>
+					<span class="headerBorder d-block mb-md-5 mb-3"><img src="{% static 'images/hbdr.png' %}"
+							alt="Header Border" class="img-fluid img-bdr"></span>
+					<p>Lorem ipsum is simply dummy text of the printing and typesetting industry.</p>
+				</header>
+				<div class="col-12 p-0 overflow-hidden d-flex flex-wrap">
+					<!-- featureCol -->
+					{% for products in product %}
+								<div class="col-12 col-sm-6 col-lg-3 featureCol mb-7">
+									<div class="border" >
+										<div class="imgHolder position-relative w-100 overflow-hidden">
+											<img src="{{products.product_image1.url}}" alt="image description" class="img-fluid " style='height:270px;width:100%'>
+											<ul class="list-unstyled postHoverLinskList d-flex justify-content-center m-0">
+												<li class="mr-2 overflow-hidden">
+												{% if wishlist_item %}
+												{% for items in wishlist_item %}
+												{% if items.product.id == products.id %}
+												<a href="{% url 'remove_wishlist' products.id %}" style="height:32px;padding-top: 6px;">
+													<img src="{% static 'images/favorite_black_18dp.svg'%}" alt="" style="height:16px;width: 16px;">
+												</a>
+												
+												{% else %}
+												<a href="{% url 'add_to_wishlist' products.id %}" class="icon-heart d-block"> 
+												</a>
+												{% endif %}
+
+												{% endfor %}
+												{% else %}
+												
+													<a href="{% url 'add_to_wishlist' products.id %}" class="icon-heart d-block"> 
+													</a>
+												{% endif %}
+												</li>
+												<li class="mr-2 overflow-hidden"><a href="{% url 'add_to_cart' products.id %}" class="icon-cart d-block"></a></li>
+												<li class="mr-2 overflow-hidden"><a href="{% url 'shop_detail' products.id %}" class="icon-eye d-block"></a></li>
+												<li class="overflow-hidden"><a href="javascript:void(0);" class="icon-arrow d-block"></a></li>
+											</ul>
+										</div>
+										<div class="text-center py-5 px-4">
+											<span class="title d-block mb-2"><a href="{% url 'shop_detail' products.id %}">{{products.product_name}}</a></span>
+											<span class="price d-block fwEbold"><del></del>{{products.get_mrp}}</span>
+											
+											<span class="hotOffer fwEbold text-uppercase text-white position-absolute d-block">HOT</span>
+											
+										</div>
+									</div>
+								</div>
+								
+								{% endfor %}
+				</div>
+			</section>
+		</div>
+
+		<!-- <aside class="footerHolder container-fluid overflow-hidden px-xl-20 px-lg-14 pt-xl-12 pb-xl-8 pt-lg-12 pt-md-8 pt-10 pb-lg-8">
+				<div class="d-flex flex-wrap flex-lg-nowrap">
+					<div class="col-4 pr-3 mb-sm-4 mb-3 mb-lg-0">
+						<h3 class="headingVI fwEbold text-uppercase mb-7">Contact Us</h3>
+						<ul class="list-unstyled footerContactList mb-3">
+							<li class="mb-3 d-flex flex-nowrap"><span class="icon icon-place mr-3"></span> <address class="fwEbold m-0">Address: London Oxford Street, 012 United Kingdom.</address></li>
+							<li class="mb-3 d-flex flex-nowrap"><span class="icon icon-phone mr-3"></span> <span class="leftAlign">Phone : <a href="javascript:void(0);">(+032) 3456 7890</a></span></li>
+							<li class="email d-flex flex-nowrap"><span class="icon icon-email mr-2"></span> <span class="leftAlign">Email:  <a href="javascript:void(0);">Botanicalstore@gmail.com</a></span></li>
+						</ul>
+						<ul class="list-unstyled followSocailNetwork d-flex flex-nowrap">
+							<li class="fwEbold mr-xl-11 mr-sm-6 mr-4">Follow  us:</li>
+							<li class="mr-xl-6 mr-sm-4 mr-2"><a href="javascript:void(0);" class="fab fa-facebook-f"></a></li>
+							<li class="mr-xl-6 mr-sm-4 mr-2"><a href="javascript:void(0);" class="fab fa-twitter"></a></li>
+							<li class="mr-xl-6 mr-sm-4 mr-2"><a href="javascript:void(0);" class="fab fa-pinterest"></a></li>
+							<li class="mr-2"><a href="javascript:void(0);" class="fab fa-google-plus-g"></a></li>
+						</ul>
+					</div>
+					<div class="col-4 mb-sm-4 mb-3 mb-lg-0">
+						<h3 class="headingVI fwEbold text-uppercase mb-6">Information</h3>
+						<ul class="list-unstyled footerNavList">
+							<li class="mb-1"><a href="javascript:void(0);">New Products</a></li>
+							<li class="mb-2"><a href="javascript:void(0);">About Our Shop</a></li>
+							<li><a href="javascript:void(0);">Privacy policy</a></li>
+						</ul>
+					</div>
+					<div class="col-4 mb-sm-4 mb-3 mb-lg-0">
+						
+						<h3 class="headingVI fwEbold text-uppercase mb-6">My Account</h3>
+						<ul class="list-unstyled footerNavList">
+							
+							<li class="mb-2"><a href="javascript:void(0);">Orders history</a></li>
+							<li><a href="javascript:void(0);">Personal information</a></li>
+						</ul>
+					</div>
+					
+				</div>
+			</aside> -->
+	</main>
+	
+
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block user %}
+    <!-- includes/header.html -->
+    {% include "include/navbar.html" %}
+    <section class="" style="margin-top:80px">
+    
+        <div class="container">
+            <div class="row">
+            <div class="col-md-3">
+                <!--   SIDEBAR   -->
+                <ul class="list-group mt-5">
+                    <a class="list-group-item active" href="{% url 'profile' %}"> Profile </a>
+                    <a class="list-group-item" href="{% url 'my_orders' %}"> My order</a>
+                    <a class="list-group-item" href="{% url 'change_password_profile' user.id  %}"> Change Password </a>
+                    <a class="list-group-item" href="{% url 'address' %}"> Address Management </a>
+        
+                </ul>
+                <br>
+                <a class="btn btn-danger btn-block mb-4 " href="{% url	 'user_logout'   %}"> <i class="fa fa-power-off"></i> <span class="text">Logout</span> </a>            <!--   SIDEBAR .//END   -->
+            </div>
+                        <div class="col-lg-9 col-md-9">
+                            <div class="card user-card-full">
+                                <div class="row m-l-0 m-r-0">
+                                    <div class="col-sm-4 bg-c-lite-green user-profile">
+                                        <div class="card-block text-center text-white">
+                                            {% if user.profile_img %}
+                                            <div class="m-b-25"> <img src="{{user.profile_img.url}}" width="25%" class="img-radius" alt="User-Profile-Image"> </div>
+                                            {% else %}
+                                            <div class="m-b-25"> <img src="http://naikenviro.net/wp-content/uploads/2018/06/null.jpg" width="25%" class="img-radius" alt="User-Profile-Image"> </div>
+                                            {% endif %}           
+                                            <h4 class="f-w-600">{{ user.username }}</h4>
+                                            <p>{{ user.phone_number }}</p> <a style="color: black;" href="{% url 'edit_profile' user.id %}">Edit<i class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="card-block">
+                                            <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Information</h6>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <p class="m-b-10 f-w-600">First Name</p>
+                                                    <h6 class="text-muted f-w-400"> {{user.first_name}}</h6>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <p class="m-b-10 f-w-600">Last Name</p>
+                                                        <h6 class="text-muted f-w-400"> {{user.last_name}}</h6>
+                                                </div>
+                                            </div>
+                                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600"></h6>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <p class="m-b-10 f-w-600">Email</p>
+                                                    <h6 class="text-muted f-w-400"> {{user.email}}</h6>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <p class="m-b-10 f-w-600">Phone</p>
+                                                    <h6 class="text-muted f-w-400"> {{user.phone_number}}</h6>
+                                                </div>
+                                            </div>
+                                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600"></h6>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <p class="m-b-10 f-w-600">State</p>
+                                                    <h6 class="text-muted f-w-400"> {{user.state}}</h6>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <p class="m-b-10 f-w-600">City</p>
+                                                    <h6 class="text-muted f-w-400"> {{user.city}}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+    
+                  
+            </div>
+    </div> <!-- row.// -->
+    </div>
+    
+    </section>
+
+	{% endblock %}
