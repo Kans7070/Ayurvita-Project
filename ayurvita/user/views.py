@@ -40,7 +40,7 @@ def login(request):
         return redirect('home')
     else:
         if request.method == 'POST':
-            email = request.POST['emails']
+            email = request.POST['email']
             password = request.POST['password']
             
             user = auth.authenticate(username=email, password=password)

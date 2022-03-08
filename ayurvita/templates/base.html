@@ -301,9 +301,10 @@
   $(document).ready(function () {
     $("#login").validate({
       rules: {
-        emails: {
+        email: {
           required: true,
-          minlength: 4
+         
+          myemail:true
         },
         password: {
           required: true,
@@ -311,9 +312,9 @@
         }
       },
       messages: {
-        emails: {
+        email: {
           required: 'This field is required',
-          minlength: 'minimum 4',
+          myemail:'enter a valid email address'
         },
         password: {
           required: 'This field is required',
