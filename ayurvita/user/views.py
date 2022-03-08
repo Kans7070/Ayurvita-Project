@@ -71,7 +71,8 @@ def register(request):
         form = RegistrationForm()
         if request.method == 'POST':
             form = RegistrationForm(request.POST)
-            password = form.cleaned_data['password']
+            password=request.POST['password']
+            print(password)
             password1=request.POST['password1']
             if password1 == password:
                 if form.is_valid():
@@ -100,7 +101,7 @@ def register(request):
                     form = RegistrationForm()
                     return redirect('register')
             else:
-                messages.error(request, 'please enter a valid form')
+                messages.error(request, 'passwords given does not match')
                 form = RegistrationForm()
                 return redirect('register')
         else:
