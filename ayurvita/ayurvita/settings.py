@@ -29,9 +29,9 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG',cast=bool)
 
-ALLOWED_HOSTS = ['127.0.0.1','ayurvita.ml','54.91.149.247',]
+ALLOWED_HOSTS = ['127.0.0.1','ayurvita.ml','54.91.108.176','www.ayurvita.ml']
 
-CSRF_TRUSTED_ORIGINS=['http://localhost:8000','https://ayurvita.ml']   
+CSRF_TRUSTED_ORIGINS=['http://localhost:8000','https://ayurvita.ml','https://www.ayurvita.ml',]   
 
 
 # Application definition
