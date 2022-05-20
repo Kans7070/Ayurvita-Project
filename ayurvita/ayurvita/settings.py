@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG',cast=bool)
 
-ALLOWED_HOSTS = ['127.0.0.1','ayurvita.ml','54.91.108.176','www.ayurvita.ml']
+ALLOWED_HOSTS = ['127.0.0.1','ayurvita.ml','54.144.75.72','www.ayurvita.ml','localhost',]
 
 CSRF_TRUSTED_ORIGINS=['http://localhost:8000','https://ayurvita.ml','https://www.ayurvita.ml',]   
 
@@ -137,19 +137,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-AWS_ACCESS_KEY_ID =config('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY=config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME=config('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_CUSTOM_DOMAIN=config('AWS_S3_CUSTOM_DOMAIN')
-AWS_STATIC_LOCATION='static'
-AWS_MEDIA_LOCATION='media'
-STATIC_URL = "static/"
+STATIC_URL = 'static/'
+
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR /'static',
 ]
 
-MEDIA_URL = "https://%s/%s/"%(AWS_S3_CUSTOM_DOMAIN,AWS_MEDIA_LOCATION)
-DEFAULT_FILE_STORAGE = 'ayurvita.storages.MediaStore'
+STATIC_ROOT = "/home/ubuntu/project/ayurvita/static_files/"
+MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
+
+
+MEDIA_URL = '/media/'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

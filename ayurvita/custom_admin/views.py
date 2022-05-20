@@ -20,10 +20,14 @@ def admin_login(request):
             password = request.POST['password']
             
             admin = auth.authenticate(
-                username=email, password=password, is_admin=True)
+                username=email, password=password)
             if admin is not None:
-                auth.login(request, admin)
-                return redirect('admin')
+		if admin.is_admin:
+                	auth.login(request, admin)
+                	return redirect('admin')
+		else:
+			messages.error(request,'Invalid credentials')
+			return redirect('admin_login')
             else:
                 messages.error(request, 'Invalid credentials')
                 return redirect('admin_login')
