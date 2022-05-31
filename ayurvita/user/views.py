@@ -220,6 +220,8 @@ def edit_profile(request, id):
             
             form.save()
             return redirect('profile')
+        print (form)
+
 
     return render(request, 'edit_profile.html', context)
 
@@ -257,5 +259,6 @@ def resent_change_password_otp(request):
     phone_number = request.session['phone_number']
     otp_verify(phone_number)
     return redirect('change_password_OTP')
+
 
 

@@ -11,10 +11,7 @@ from offers.models import ProductOffer,CategoryOffer
 
 
 def shop(request):
-    sort=False
     product_discount,category_discount,discount="","",""
-   
-    
     try:
         del request.session['shop-detail']
     except:
@@ -23,7 +20,6 @@ def shop(request):
         try:
             product_id = request.session['product']
             del request.session['product']
-            
             product = Product.objects.filter(id=product_id)
             try:
                 try:
@@ -34,7 +30,6 @@ def shop(request):
                 except:
                     offer=CategoryOffer.objects.get(category=product.category)
                     category_discount=offer.discount
-
             except:  
                 pass
             if product_discount:
@@ -47,7 +42,6 @@ def shop(request):
                     discount=product_discount
             else:
                 discount=category_discount
-            
             product_count = product.count()
             category = Category.objects.all()
             welcome = ShopWelcome.objects.all()
@@ -77,7 +71,6 @@ def shop(request):
                     except:
                         offer=CategoryOffer.objects.get(category=product.category)
                         category_discount=offer.discount
-
                 except:  
                     pass
                 if product_discount:
@@ -90,7 +83,6 @@ def shop(request):
                         discount=product_discount
                 else:
                     discount=category_discount
-            
                 product_count = product.count()
                 category = Category.objects.all()
                 welcome = ShopWelcome.objects.get(id=1)
@@ -131,7 +123,6 @@ def shop(request):
                         except:
                             offer=CategoryOffer.objects.get(category=product.category)
                             category_discount=offer.discount
-
                     except:  
                         pass
                     if product_discount:
@@ -185,7 +176,6 @@ def shop_detail(request, id):
             except:
                 offer=CategoryOffer.objects.get(category=product.category)
                 category_discount=offer.discount
-
         except:  
             pass
         if product_discount:
@@ -198,7 +188,6 @@ def shop_detail(request, id):
                 discount=product_discount
         else:
             discount=category_discount
-        
         go_to_cart=False
         for products in cart_item:
             if products.product.id == product.id:
@@ -211,7 +200,6 @@ def shop_detail(request, id):
             price_same=True
         else:
             price_same=False
-        
         context = {
             'product': product,
             'go_to_cart': go_to_cart,
@@ -230,7 +218,6 @@ def search(request):
         if item == "":
             return redirect('shop')
         else:
-            
             if Product.objects.filter(product_name=item):
                 product = Product.objects.get(product_name=item)
                 id = product.id
@@ -261,11 +248,9 @@ def product_not_found(request):
 
 
 def category(request,category_id):
-    
     id=category_id
-    category = Category.objects.get(id=id)
-    request.session["category"] = category.id
-    
+    category = Category.objects.get(id=id)    
+    request.session["category"] = category.id    
     return redirect('shop')
 
 

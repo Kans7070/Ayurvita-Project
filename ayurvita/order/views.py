@@ -18,12 +18,10 @@ razorpay_client = razorpay.Client(
 
 
 def pay(request):
-    
     user = request.user
     try:
         address_id = request.session['selected_address']
         address = Address.objects.get(id=address_id)
-        
         del request.session['selected_address']
     except:
         try:
@@ -62,6 +60,7 @@ def razorpay(request,amount):
     payment_id = payment['id']
     return key,payment_id
 
+
 def cart_checkout(request):
     buynow=False  
     try:
@@ -69,7 +68,6 @@ def cart_checkout(request):
     except:
         messages.error(request, 'there is no item for checkout')
         return redirect('cart_page')
-
     selected_address = ""
     address_bool = False
     try:
@@ -84,7 +82,6 @@ def cart_checkout(request):
             request.session['selected_address'] = address_id
             del request.session['address']
             selected_address = Address.objects.get(id=address_id)
-
     except:
         pass
     form = AddressForm()
@@ -96,30 +93,18 @@ def cart_checkout(request):
             address.save()
             return redirect('address')
         else:
-            
             messages.error(request, 'please enter a valid form')
             return redirect('address')
-
-
     user = request.user
-
-
     try:
         cart_item = CartItem.objects.filter(user=user)
     except:
         return redirect('shop')
-
-
     sum = 0
     for item in cart_item:
         total = item.sub_total()
         sum = sum+total
-
-
     addresses = Address.objects.filter(user=user)
-    
-
-    
     count = request.session['count']
     if count == 1:
         orders = OrderHistory.objects.all()
@@ -173,7 +158,6 @@ def buynow(request,product_id):
     sum=product.get_mrp()
     try:
         count=request.session['count']
-
     except:
         count = 0
     count=0
@@ -202,7 +186,6 @@ def buynow(request,product_id):
             request.session['selected_address'] = address_id
             del request.session['address']
             selected_address = Address.objects.get(id=address_id)
-
     except:
         pass
     form = AddressForm()
@@ -285,7 +268,6 @@ def address_checkout(request):
             if form.is_valid():
                 address = form.save(commit=False)
                 labelled_as = address.labelled_as
-                
                 if Address.objects.filter(user=request.user, labelled_as=labelled_as).exists():
                     messages.error(request, 'this address already exists')
                     return redirect('cart_checkout')
@@ -300,4 +282,3 @@ def address_checkout(request):
                 messages.error(request, 'please enter a valid form')
                 return redirect('cart_checkout')
 
-    
