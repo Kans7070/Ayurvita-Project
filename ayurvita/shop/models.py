@@ -20,7 +20,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     date_updated = models.DateTimeField(auto_now_add=True,)
     is_available = models.BooleanField(default=True)
-    mrp = models.IntegerField()
+    
     
 
     
