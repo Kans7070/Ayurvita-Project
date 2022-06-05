@@ -60,13 +60,11 @@
 
 
 									<td class="border-top-0 border-bottom px-0 py-6">
-										<div class=""> <button type="button" onclick="remove_quantity_{{items.product_name}}()"
-												class="mr-2">-</button>
-												<input value="5" name="{{request.user.email}}_{{items.product_name}}" class="form-control mr-2 "
+										<div class="">
+											<a href='{% url 'decrease_quantity' items.product.id  %}'>-</a> 
+												<input value="{{items.quantity}}" name="{{request.user.email}}_{{items.product_name}}" class="form-control mr-2 "
 												disabled style='width:25%;text-align: center;background-color:rgba(0,0,0,0) !important;border:none !important;'>
-												<button
-												type="button"
-												onclick="add_quantity_{{items.product_name}}()">+</button> 
+												<a href='{% url 'add_to_cart' items.product.id  %}'>+</a> 
 											</div>
 											</td>
 	

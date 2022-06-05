@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def home(request):
-    print("Welcome")
+    
     if request.user.is_authenticated:
         id=request.user.id
         cart_item=CartItem.objects.filter(user_id=id)
@@ -43,6 +43,7 @@ def login(request):
             email = request.POST['email']
             password = request.POST['password']
             
+         
             user = auth.authenticate(username=email, password=password)
 
             
@@ -71,8 +72,7 @@ def register(request):
         form = RegistrationForm()
         if request.method == 'POST':
             form = RegistrationForm(request.POST)
-            password=request.POST['password']
-            print(password)
+            password=request.POST['password']      
             password1=request.POST['password1']
             if password1 == password:
                 if form.is_valid():

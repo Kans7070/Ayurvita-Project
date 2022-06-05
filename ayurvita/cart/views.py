@@ -36,7 +36,7 @@ def cart_page(request):
         "sum":sum
     }
     if request.user.is_authenticated:
-       
+        print(context)
         return render(request, 'cart_page.html', context)
     else:
         return redirect('login')
@@ -59,7 +59,6 @@ def add_to_cart(request, product_id):
         cart_item.save()
         if request.session.has_key('shops'):
             return redirect('shop')
-        
     else:
         cart_item = CartItem.objects.create(
             product=product, quantity=1, user=request.user)

@@ -12,7 +12,7 @@ from offers.models import ProductOffer,CategoryOffer
 
 
 def admin_login(request):
-    if request.user.is_authenticated:
+    if request.session.has_key('admin'):
         return redirect('admin')
     else:
         if request.method == 'POST':
@@ -21,9 +21,11 @@ def admin_login(request):
             
             admin = auth.authenticate(
                 username=email, password=password)
+
             if admin is not None:
                 if admin.is_admin:
                     auth.login(request, admin)
+                    request.session['admin'] = admin
                     return redirect('admin')
                 else:
                     messages.error(request,'Invalid credentials')

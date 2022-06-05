@@ -109,23 +109,20 @@ def cart_checkout(request):
     if count == 1:
         orders = OrderHistory.objects.all()
         cart_item = CartItem.objects.filter(user=user)
-
+        print(orders)
         for items in cart_item:
-            
             order = orders.create(user=user, product_name=items.product.product_name, product_quantity=items.quantity, product_image1=items.product.product_image1,
                                 product_image2=items.product.product_image2, product_image3=items.product.product_image3, category=items.product.category, price=sum,)
+            request.session['orders_id']=order.id
         count = 0
         request.session['count'] = count
-
     try:
-        order_id = order.id
+        order_id = request.session['order_id']
     except:
+        print('hai')
         messages.error(request,"no product for checkout")
         return redirect('cart_page')
-
     request.session['order_id'] = order_id
-    
-
     amount = int(sum*100)
     key,payment_id=razorpay(request,amount)
     buynow=False
@@ -166,7 +163,7 @@ def buynow(request,product_id):
                                 product_image2=product.product_image2, product_image3=product.product_image3, category=product.category, price=sum,)
         count=+1
         request.session['count']= count
-    print(order.id)
+    
    
     order_id = order.id        
     request.session['order_id'] = order_id

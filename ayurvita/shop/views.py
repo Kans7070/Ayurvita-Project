@@ -279,7 +279,7 @@ def sort(request):
 
 def price_high_to_low(request):
     sort(request)
-    print('hai')
+    
     request.session['high_low']=True
     return redirect('shop')
 
