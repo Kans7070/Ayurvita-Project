@@ -25,4 +25,3 @@ class OrderHistory(models.Model):
     status = models.CharField(choices=my_choices,default="not packed",max_length=50)
     price = models.PositiveIntegerField()
     address=models.ForeignKey(Address, null=True,on_delete=models.CASCADE)
-    payment=models.BooleanField(default=False)

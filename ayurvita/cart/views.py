@@ -36,7 +36,6 @@ def cart_page(request):
         "sum":sum
     }
     if request.user.is_authenticated:
-        print(context)
         return render(request, 'cart_page.html', context)
     else:
         return redirect('login')

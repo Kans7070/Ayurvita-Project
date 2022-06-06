@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from numpy import product
 from .models import OrderHistory
 from cart.models import CartItem
 from address.models import Address
@@ -17,8 +18,10 @@ razorpay_client = razorpay.Client(
     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
 
 
-def pay(request):
-    user = request.user
+def pay(request,product_id=None):
+    print(product_id) 
+    
+
     try:
         address_id = request.session['selected_address']
         address = Address.objects.get(id=address_id)
@@ -34,22 +37,25 @@ def pay(request):
             return redirect('buynow',product_id)
         messages.error(request, 'select or give an address')
         return redirect('cart_checkout')
-    order_id = request.session['order_id']
-    OrderHistory.objects.filter(id=order_id).update(payment=True)
-    
-    try:
-        del request.session['order_id']
-    except:
-        pass
-    cart_item = CartItem.objects.filter(user=user)
+    if product_id:
+        product= Product.objects.get(id=product_id)
+        order=OrderHistory.objects.create(user=request.user, product_name=product.product_name, product_quantity=1, product_image1=product.product_image1,
+                                product_image2=product.product_image2, product_image3=product.product_image3, category=product.category, price=product.get_mrp(),)
+        del request.session['buynow']
+    else:
+        cart=CartItem.objects.filter(user=request.user)
+        print(cart)
+        for item in cart:
+            order=OrderHistory.objects.create(user=request.user, product_name=item.product.product_name, product_quantity=item.quantity, product_image1=item.product.product_image1,
+                                product_image2=item.product.product_image2, product_image3=item.product.product_image3, category=item.product.category, price=item.product.get_mrp(),)
+        cart.delete()
 
-    cart_item.delete()
     return redirect('home')
 
 
 def my_orders(request):
     orders = OrderHistory.objects.filter(
-        user=request.user,payment=True).order_by("-date_created")
+        user=request.user).order_by("-date_created")
     return render(request, "my_orders.html", {'orders': orders})
 
 
@@ -62,7 +68,6 @@ def razorpay(request,amount):
 
 
 def cart_checkout(request):
-    buynow=False  
     try:
         cart_item = CartItem.objects.filter(user=request.user)
     except:
@@ -98,6 +103,9 @@ def cart_checkout(request):
     user = request.user
     try:
         cart_item = CartItem.objects.filter(user=user)
+        if not cart_item:
+            messages.error(request,"no product for checkout")
+            return redirect('cart_page')
     except:
         return redirect('shop')
     sum = 0
@@ -105,24 +113,6 @@ def cart_checkout(request):
         total = item.sub_total()
         sum = sum+total
     addresses = Address.objects.filter(user=user)
-    count = request.session['count']
-    if count == 1:
-        orders = OrderHistory.objects.all()
-        cart_item = CartItem.objects.filter(user=user)
-        print(orders)
-        for items in cart_item:
-            order = orders.create(user=user, product_name=items.product.product_name, product_quantity=items.quantity, product_image1=items.product.product_image1,
-                                product_image2=items.product.product_image2, product_image3=items.product.product_image3, category=items.product.category, price=sum,)
-            request.session['orders_id']=order.id
-        count = 0
-        request.session['count'] = count
-    try:
-        order_id = request.session['order_id']
-    except:
-        print('hai')
-        messages.error(request,"no product for checkout")
-        return redirect('cart_page')
-    request.session['order_id'] = order_id
     amount = int(sum*100)
     key,payment_id=razorpay(request,amount)
     buynow=False
@@ -134,12 +124,13 @@ def cart_checkout(request):
         "cart_item": cart_item,
         "sum": sum,
         "selected_address": selected_address,
-        "order_id": order_id,
         "amount": amount,
         "address_bool": address_bool,
         "buynow":buynow
     }
     return render(request, "checkout.html", context)
+
+
 
 
 
@@ -151,24 +142,8 @@ def buynow(request,product_id):
     id = request.user.id
     user = User.objects.get(id=id)
     product = Product.objects.get(id=product_id)
-    orders=OrderHistory.objects.all()
-    sum=product.get_mrp()
-    try:
-        count=request.session['count']
-    except:
-        count = 0
-    count=0
-    if count==0:
-        order=orders.create(user=user, product_name=product.product_name, product_quantity=1, product_image1=product.product_image1,
-                                product_image2=product.product_image2, product_image3=product.product_image3, category=product.category, price=sum,)
-        count=+1
-        request.session['count']= count
-    
-   
-    order_id = order.id        
-    request.session['order_id'] = order_id
-    order = OrderHistory.objects.get(id=order_id)
-    quantity = order.product_quantity
+    sum=product.get_mrp()    
+    quantity = 1
     selected_address = ""
     address_bool = False
     try:
@@ -209,7 +184,6 @@ def buynow(request,product_id):
         "addresses": addresses,
         "sum": sum,
         "selected_address": selected_address,
-        "order_id": order_id,
         "amount": amount,
         "address_bool": address_bool,
         "buynow":buynow,
@@ -226,6 +200,7 @@ def address_checkout_with_id(request, id):
         product_id = request.session['product_id']
     except:
         buynow=False
+    buynow=False
     if buynow:
         return redirect('buynow',product_id)
     else:
@@ -279,3 +254,12 @@ def address_checkout(request):
                 messages.error(request, 'please enter a valid form')
                 return redirect('cart_checkout')
 
+def order(request):
+    try:
+        cart = CartItem.objects.get(user=request.user)
+    except:
+        messages.error(request,"no product for checkout")
+        return redirect('cart_page')
+    for item in cart:
+        order=OrderHistory.objects.create(user=request.user, product_name=item.product.product_name, product_quantity=1, product_image1=item.product.product_image1,
+                                product_image2=item.product.product_image2, product_image3=item.product.product_image3, category=item.product.category, price=item.product.product_price ,)

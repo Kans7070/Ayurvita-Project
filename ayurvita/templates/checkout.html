@@ -160,11 +160,7 @@
                                     <p>{{product.product_name}}</p>
                                     <p><span class=""></span>{{product.brand}}</p>
                                     <p><span class=""></span>{{quantity}}</p>
-                                    {% if buynow %}
-                                    <p class="mb-2" ><span class="fas "></span>{{sum}}</p>
-                                    {% else %}
                                     <p class="mb-2" ><span class="fas "></span>{{sub_total}}</p>
-                                    {% endif %}
                                 </div>
                                 
                                 {% else %}
@@ -185,7 +181,11 @@
                                 {% if address_bool %}
                                 <button id="rzp-button1">Pay:{{sum}} </button>
                                 {% else %}
+                                {% if product.id %}
+                                <div class="btn  mt-2" ><a href="{% url 'pay' product.id %}">Pay</a> <span class="fas"></span>{{sum}} </div>
+                                {% else %}
                                 <div class="btn  mt-2" ><a href="{% url 'pay' %}">Pay</a> <span class="fas"></span>{{sum}} </div>
+                                {% endif %}
                                 {% endif %}
                             </div>
                         </div>
@@ -208,7 +208,11 @@ var options = {
         alert(response.razorpay_payment_id);
         alert(response.razorpay_order_id);
         alert("order placed");
+        {% if product.id %}
+        window.location.replace("{% url 'pay' product.id %}")
+        {% else %}
         window.location.replace("{% url 'pay' %}")
+        {% endif %}
     },
     "prefill": {
         "name": "Gaurav Kumar",

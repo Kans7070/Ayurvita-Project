@@ -162,6 +162,12 @@ def shop_detail(request, id):
         del request.session['shops']
     except:
         pass
+    try:
+        del request.session['count']
+    except:
+        pass
+    
+    
     request.session['shop-detail'] = 'shop-detail'
     user=request.user
     if request.user.is_authenticated:
