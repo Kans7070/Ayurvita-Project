@@ -10,7 +10,7 @@
     " class="container-fluid d-flex">
     <div style="height: 60px">
       <a href="{% url 'register' %}">
-        <img style="margin-bottom: -20px" src="{% static 'images/IMAGE.svg'%}" alt="Botanical" class="img-fluid" >
+        <img style="margin-bottom: -20px" src="{% static 'images/IMAGE.svg'%}" alt="Botanical" class="img-fluid">
       </a>
     </div>
     <div>
@@ -28,43 +28,43 @@
     <div class="row justify-content-center">
 
       <!-- register Form -->
-     <div class="col-12 text-center"> 
+      <div class="col-12 text-center">
 
-       <h1>Register</h1>
-     </div>
+        <h1>Register</h1>
+      </div>
       <div class="col-12 col-md-8 p-5" style="background:#f4f4f4;">
         <div class="container">
-          <form  action="{% url 'register' %}" method="POST" id="register" >
+          <form action="" method="POST" id="register">
             {% csrf_token %}
-        <div class="row ">
-              
+            <div class="row ">
+
               <div class="form-group col-md-6 justify-content-center text-center col-lg-4" style="user-select: auto">
-                <label  class="requiredField" style="user-select: auto">First Name<span
-                    class="asteriskField" style="user-select: auto">*</span>
+                <label class="requiredField" style="user-select: auto">First Name<span class="asteriskField"
+                    style="user-select: auto">*</span>
                 </label>
                 <div style="margin:0 auto">{{form.first_name}}</div>
               </div>
               <div class="form-group col-md-6 justify-content-center text-center col-lg-4" style="user-select: auto">
-                <label  class="requiredField" style="user-select: auto">Last Name<span
-                    class="asteriskField" style="user-select: auto">*</span>
+                <label class="requiredField" style="user-select: auto">Last Name<span class="asteriskField"
+                    style="user-select: auto">*</span>
                 </label>
                 <div style="margin:0 auto">{{form.last_name}}</div>
               </div>
               <div class="form-group col-md-6 justify-content-center text-center col-lg-4" style="user-select: auto">
-                <label  class="requiredField" style="user-select: auto">UserName<span
-                    class="asteriskField" style="user-select: auto">*</span>
+                <label class="requiredField" style="user-select: auto">UserName<span class="asteriskField"
+                    style="user-select: auto">*</span>
                 </label>
                 <div style="margin:0 auto">{{form.username}}</div>
               </div>
               <div class="form-group col-md-6 justify-content-center text-center col-lg-4" style="user-select: auto">
-                <label class="requiredField" style="user-select: auto">Mobile-Number<span
-                    class="asteriskField" style="user-select: auto">*</span>
+                <label class="requiredField" style="user-select: auto">Mobile-Number<span class="asteriskField"
+                    style="user-select: auto">*</span>
                 </label>
                 <div style="margin:0 auto">{{form.phone_number}}</div>
               </div>
               <div class="form-group col-md-6 justify-content-center text-center col-lg-4" style="user-select: auto">
-                <label class="requiredField" style="user-select: auto">Email<span
-                    class="asteriskField" style="user-select: auto">*</span>
+                <label class="requiredField" style="user-select: auto">Email<span class="asteriskField"
+                    style="user-select: auto">*</span>
                 </label>
                 <div style="margin:0 auto">{{form.email}}</div>
               </div>
@@ -75,45 +75,48 @@
                 <div style="margin:0 auto">{{form.city}}</div>
               </div>
               <div class="form-group col-md-6 justify-content-center text-center col-lg-4" style="user-select: auto">
-                <label class="requiredField" style="user-select: auto">State<span
-                    class="asteriskField" style="user-select: auto">*</span>
+                <label class="requiredField" style="user-select: auto">State<span class="asteriskField"
+                    style="user-select: auto">*</span>
                 </label>
                 <div style="margin:0 auto">{{form.state}}</div>
               </div>
               <div class="form-group col-md-6 justify-content-center text-center col-lg-4" style="user-select: auto">
-                <label class="requiredField" style="user-select: auto">Password<span
-                    class="asteriskField" style="user-select: auto">*</span>
+                <label class="requiredField" style="user-select: auto">Password<span class="asteriskField"
+                    style="user-select: auto">*</span>
                 </label>
                 <div style="margin:0 auto">{{form.password}}</div>
               </div>
               <div class="form-group col-md-6 justify-content-center text-center col-lg-4" style="user-select: auto">
-                <label class="requiredField" style="user-select: auto">Confirm-Password<span
-                    class="asteriskField" style="user-select: auto">*</span>
+                <label class="requiredField" style="user-select: auto">Confirm-Password<span class="asteriskField"
+                    style="user-select: auto">*</span>
                 </label>
                 <div style="margin:0 auto">
                   <input type="password" name="password1" maxlength="128" class="textinput textInput form-control"
-                    required="" id="id_password2" style="width:100%" >
-                    
+                    required="" id="id_password2" style="width:100%">
                 </div>
               </div>
-              
-              <!-- {{ form.non_field_errors }} -->
-              {% for message in messages %}
+              {% for error in form.errors.email %}
               <div class="form-group col-12" style="user-select: auto">
-                <div class="requiredField" style="user-select: auto">
-                  <h4 style="color: red;margin:0 auto;width:fit-content">{{message}}</h4>
-                  <span class="asteriskField" style="user-select: auto"></span>
-                </div>
-
+                <p class="text-danger text-center">{{error}}</p>
               </div>
               {% endfor %}
-              <!-- {% include "include/sweetalert.html" %} -->
-              <button class="col-8 mb-2 p-2" type="submit" 
-                style="background: #5ba515; color: white;margin: 0 auto;border: none;" >Register</button>
+              {% for error in form.errors.phone_number %}
+              <div class="form-group col-12" style="user-select: auto">
+                <p class="text-danger text-center">{{error}}</p>
               </div>
-            </form>
-          </div>
+              {% endfor %}
+              {% for message in messages %}
+              <div class="form-group col-12" style="user-select: auto">
+                <p class="text-danger text-center">{{message}}</p>
+              </div>
+              {% endfor %}
+              
+              <button class="col-8 mb-2 p-2" type="submit"
+                style="background: #5ba515; color: white;margin: 0 auto;border: none;">Register</button>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
   </div>
 

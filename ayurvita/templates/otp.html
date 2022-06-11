@@ -13,29 +13,37 @@
     <div class="d-flex justify-content-center align-items-center container">
         <div class="card py-5 px-3" style='margin:0 auto;height:fit-content'>
             <h5 class="m-0">Mobile phone verification</h5><span class="mobile-text">Enter the code we just send on your
-                mobile phone <b class="text-danger">+91 {{phone_number}}</b></span>
-            <form action="{% url 'otp' %}" method="POST">
+                mobile phone <b class="text-danger">+91 {{request.session.phone_number}}</b></span>
+            <form action="" method="POST">
                 {% csrf_token %}
                 <div class="row">
                     <div class="d-flex flex-row mt-3 mb-2">
-                        <input type="text" class="form-control mb-2" name="otp1">
-                       
+                        <input type="text" class="form-control mb-2" name="otp">
+
 
                     </div>
                     <input type="submit" class="col-8 mb-2 " style="margin:0px auto">
                     <div class="mb-2">
-                        {% for x in messages %}
-                        <h4>{{x}}</h3>
-                            {% endfor %} 
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        <p class="text-danger text-center m-0 mr-3">{{message}}</p>
+                        {% else %}
+                        <p class="text-success text-center m-0 mr-3">{{message}}</p>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </form>
             <div class="text-center mt-5"><span class="d-block mobile-text">Don't receive the code?</span><span
-                     class="font-weight-bold text-danger cursor">
-                     <form action="{% url 'resent_register_otp' %}"><button id='resend' type="submit" >Resend</button></form></span>
-                     <div class="text-center mt-5">
-                        <p style="color: red;">Resend OTP in <span class="js-timeout">2:00</span>.</p>
-                      </div>
+                    class="font-weight-bold text-danger cursor">
+                    <form action="{% url 'resent_register_otp' %}"><button id='resend' type="submit">Resend</button>
+                    </form>
+                </span>
+                <div class="text-center mt-5">
+                    <p style="color: red;">Resend OTP in <span class="js-timeout">2:00</span>.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -79,7 +87,8 @@
     .cursor {
         cursor: pointer
     }
-    .error{
+
+    .error {
         color: red;
     }
 </style>
@@ -87,42 +96,42 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
     var interval;
-  
-  function countdown() {
-    clearInterval(interval);
-    interval = setInterval( function() {
-        var timer = $('.js-timeout').html();
-        timer = timer.split(':');
-        var minutes = timer[0];
-        var seconds = timer[1];
-        seconds -= 1;
-        if (minutes < 0) return;
-        else if (seconds < 0 && minutes != 0) {
-            minutes -= 1;
-            seconds = 59;
-        }
-        else if (seconds < 10 && length.seconds != 2) seconds = '0' + seconds;
-  
-        $('.js-timeout').html(minutes + ':' + seconds);
-  
-        if (minutes == 0 && seconds == 0) clearInterval(interval);
-    }, 1000);
-  }
-  
-  $(document).ready(function () {
-    $('.js-timeout').text(":10");
-    countdown();
-    $("#resend").attr("disabled",true);
-    setTimeout(function() {
-        $("#resend").removeAttr("disabled",);      
-    }, 10000);
-  });
-  
-  $('#js-resetTimer').click(function () {
-    $('.js-timeout').text(":10");
-    clearInterval(interval);
-  });
-  </script>
+
+    function countdown() {
+        clearInterval(interval);
+        interval = setInterval(function () {
+            var timer = $('.js-timeout').html();
+            timer = timer.split(':');
+            var minutes = timer[0];
+            var seconds = timer[1];
+            seconds -= 1;
+            if (minutes < 0) return;
+            else if (seconds < 0 && minutes != 0) {
+                minutes -= 1;
+                seconds = 59;
+            }
+            else if (seconds < 10 && length.seconds != 2) seconds = '0' + seconds;
+
+            $('.js-timeout').html(minutes + ':' + seconds);
+
+            if (minutes == 0 && seconds == 0) clearInterval(interval);
+        }, 1000);
+    }
+
+    $(document).ready(function () {
+        $('.js-timeout').text(":10");
+        countdown();
+        $("#resend").attr("disabled", true);
+        setTimeout(function () {
+            $("#resend").removeAttr("disabled",);
+        }, 10000);
+    });
+
+    $('#js-resetTimer').click(function () {
+        $('.js-timeout').text(":10");
+        clearInterval(interval);
+    });
+</script>
 
 
 

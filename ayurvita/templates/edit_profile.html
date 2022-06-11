@@ -19,7 +19,7 @@
     </div>
 
     <!-- Login Form -->
-    <form class="" action="{% url 'edit_profile' user.id %}" method="POST" id="register" enctype="multipart/form-data">
+    <form class="" action="" method="POST" id="register" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="container">
         {{ form|crispy }}
