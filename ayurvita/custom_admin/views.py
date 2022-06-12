@@ -12,7 +12,6 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
-@login_required(redirect_field_name=None, login_url='admin_login')
 def admin_login(request):
     if not request.user.is_admin:
         return redirect(home)
