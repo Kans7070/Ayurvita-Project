@@ -121,10 +121,6 @@ def user_unblock(request, id):
 def add_product(request):
     if not request.user.is_admin:
         return redirect(home)
-    form = AddProduct()
-    context = {
-        'form': form
-    }
     if request.method == 'POST':
         form = AddProduct(request.POST, request.FILES)
         if form.is_valid():
@@ -133,29 +129,29 @@ def add_product(request):
         else:
             messages.error(request, "product invalid")
             return redirect('add_product')
-    return render(request, 'admin_pages/add_product.html', context)
+    form = AddProduct()
+    context = {
+        'form': form
+    }
+    return render(request, 'admin_pages/form.html', context)
 
 
 @login_required(redirect_field_name=None, login_url='admin_login')
 def edit_product(request, id):
     if not request.user.is_admin:
         return redirect(home)
-    form = ProductUpdate(request.POST)
     product = Product.objects.get(id=id)
+    if request.method == 'POST':
+        form = ProductUpdate(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('product')
     form = ProductUpdate(instance=product)
     context = {
         'form': form,
         'id': id
     }
-    if request.method == 'POST':
-        form = ProductUpdate(request.POST, request.FILES, instance=product)
-
-        if form.is_valid():
-
-            form.save()
-            return redirect('product')
-
-    return render(request, 'admin_pages/edit_product.html', context)
+    return render(request, 'admin_pages/form.html', context)
 
 
 @login_required(redirect_field_name=None, login_url='admin_login')
@@ -172,19 +168,18 @@ def add_category(request):
     if not request.user.is_admin:
         return redirect(home)
     form = AddCategoryForm()
-    context = {
-        'form': form
-    }
     if request.method == 'POST':
         form = AddCategoryForm(request.POST)
-
         if form.is_valid():
             form.save()
             return redirect('admin_category')
         else:
             messages.error(request, "product invalid")
             return redirect('add_category')
-    return render(request, 'admin_pages/add_category.html', context)
+    context = {
+        'form': form
+    }
+    return render(request, 'admin_pages/form.html', context)
 
 
 @login_required(redirect_field_name=None, login_url='admin_login')
@@ -200,22 +195,18 @@ def delete_category(request, id):
 def edit_category(request, id):
     if not request.user.is_admin:
         return redirect(home)
-    form = EditCategoryForm(request.POST)
     category = Category.objects.get(id=id)
     form = EditCategoryForm(instance=category)
+    if request.method == 'POST':
+        form = EditCategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_category')
     context = {
         'form': form,
         'id': id
     }
-    if request.method == 'POST':
-        form = EditCategoryForm(request.POST, instance=category)
-
-        if form.is_valid():
-
-            form.save()
-            return redirect('admin_category')
-
-    return render(request, 'admin_pages/edit_category.html', context)
+    return render(request, 'admin_pages/form.html', context)
 
 
 @login_required(redirect_field_name=None, login_url='admin_login')
@@ -246,22 +237,18 @@ def offers(request):
 def edit_product_offers(request, id):
     if not request.user.is_admin:
         return redirect(home)
-    form = AddProductOfferForm(request.POST)
     product_offer = ProductOffer.objects.get(id=id)
     form = AddProductOfferForm(instance=product_offer)
+    if request.method == 'POST':
+        form = AddProductOfferForm(request.POST, instance=product_offer)
+        if form.is_valid():
+            form.save()
+            return redirect('offers')
     context = {
         'form': form,
         'id': id
     }
-    if request.method == 'POST':
-        form = AddProductOfferForm(request.POST, instance=product_offer)
-
-        if form.is_valid():
-
-            form.save()
-            return redirect('offers')
-
-    return render(request, 'admin_pages/edit_product_offer.html', context)
+    return render(request, 'admin_pages/form.html', context)
 
 
 @login_required(redirect_field_name=None, login_url='admin_login')
@@ -271,19 +258,16 @@ def edit_category_offers(request, id):
     form = AddCategoryOfferForm(request.POST)
     category_offer = CategoryOffer.objects.get(id=id)
     form = AddCategoryOfferForm(instance=category_offer)
+    if request.method == 'POST':
+        form = AddCategoryOfferForm(request.POST, instance=category_offer)
+        if form.is_valid():
+            form.save()
+            return redirect('offers')
     context = {
         'form': form,
         'id': id
     }
-    if request.method == 'POST':
-        form = AddCategoryOfferForm(request.POST, instance=category_offer)
-
-        if form.is_valid():
-
-            form.save()
-            return redirect('offers')
-
-    return render(request, 'admin_pages/edit_category_offer.html', context)
+    return render(request, 'admin_pages/form.html', context)
 
 
 @login_required(redirect_field_name=None, login_url='admin_login')
@@ -291,9 +275,6 @@ def add_product_offer(request):
     if not request.user.is_admin:
         return redirect(home)
     form = AddProductOfferForm()
-    context = {
-        'form': form
-    }
     if request.method == 'POST':
         form = AddProductOfferForm(request.POST)
         product = request.POST['product']
@@ -308,7 +289,10 @@ def add_product_offer(request):
             else:
                 messages.error(request, "offer is not added")
                 return redirect('add_product_offer')
-    return render(request, 'admin_pages/add_product_offer.html', context)
+    context = {
+        'form': form
+    }
+    return render(request, 'admin_pages/form.html', context)
 
 
 @login_required(redirect_field_name=None, login_url='admin_login')
@@ -316,9 +300,6 @@ def add_category_offer(request):
     if not request.user.is_admin:
         return redirect(home)
     form = AddCategoryOfferForm()
-    context = {
-        'form': form
-    }
     if request.method == 'POST':
         form = AddCategoryOfferForm(request.POST)
         category = request.POST['category']
@@ -333,8 +314,10 @@ def add_category_offer(request):
             else:
                 messages.error(request, "form is not valid")
                 return redirect('add_category_offer')
-    else:
-        return render(request, 'admin_pages/add_category_offer.html', context)
+    context = {
+        'form': form
+    }
+    return render(request, 'admin_pages/form.html', context)
 
 
 @login_required(redirect_field_name=None, login_url='admin_login')

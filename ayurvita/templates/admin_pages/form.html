@@ -10,28 +10,21 @@
 <div class="wrapper " style="margin: 10px auto">
   <div id="formContent">
     <!-- Tabs Titles -->
-
     <!-- Icon -->
     <div class="fadeIn first">
       <div>
         <h1>Add Category Offer</h1>
       </div>
     </div>
-
     <!-- Login Form -->
-    <form class="" action="{% url 'add_category_offer' %}" method="POST" id="register" >
+    <form class="" action="" method="POST" id="register" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="container">
         {{ form|crispy }}
-        
-        
-          
-          {% for message in messages %}
-          <h3 style="color:red">{{message}}</h3>
-          {% endfor %}
-          <!-- {% include "include/sweetalert.html" %} -->
-          
-        
+        {% for message in messages %}
+        <h3 style="color:red">{{message}}</h3>
+        {% endfor %}
+        <!-- {% include "include/sweetalert.html" %} -->
       </div>
       <input type="submit" class=" col-10 mb-2" value="submit" style="background:#5ba515;color:white">
   </div>

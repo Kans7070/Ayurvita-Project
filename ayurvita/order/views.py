@@ -21,7 +21,6 @@ razorpay_client = razorpay.Client(
 
 @login_required(redirect_field_name=None, login_url='login')
 def pay(request, product_id=None):
-    print(product_id)
     try:
         address_id = request.session['selected_address']
         address = Address.objects.get(id=address_id)
@@ -44,7 +43,6 @@ def pay(request, product_id=None):
         del request.session['buynow']
     else:
         cart = CartItem.objects.filter(user=request.user)
-        print(cart)
         for item in cart:
             order = OrderHistory.objects.create(user=request.user, product_name=item.product.product_name, product_quantity=item.quantity, product_image1=item.product.product_image1,
                                                 product_image2=item.product.product_image2, product_image3=item.product.product_image3, category=item.product.category, price=item.product.get_mrp(),)
