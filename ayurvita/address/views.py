@@ -2,10 +2,11 @@ from django.shortcuts import render,redirect
 from address.forms import AddressForm
 from address.models import Address
 from django.contrib import auth, messages
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-
+@login_required(redirect_field_name=None, login_url='login')
 def address(request):
     form = AddressForm()
     if request.method == 'POST':
@@ -33,7 +34,7 @@ def address(request):
     }
     return render(request, 'address.html',context)
 
-
+@login_required(redirect_field_name=None, login_url='login')
 def delete_address(request,id):
     address = Address.objects.get(id=id,user=request.user)
     address.delete()

@@ -93,7 +93,6 @@ class Product(models.Model):
                 self.mrp=mrp
                 return mrp
             else:
-                self.mrp=self.product_price
                 return self.product_price
 
 

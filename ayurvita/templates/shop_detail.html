@@ -8,7 +8,7 @@
 	<!-- main -->
 	<main>
 		<!-- introBannerHolder -->
-		<section class="introBannerHolder d-flex w-100 bgCover" style="background-image: ">
+		<section class="introBannerHolder d-flex w-100 bgCover">
 			<div class="container">
 				<div class="row">
 					<div class="col-12 pt-lg-23 pt-md-15 pt-sm-10 pt-6 text-center">
@@ -25,7 +25,7 @@
 			</div>
 		</section>
 		<!-- twoColumns -->
-		<div class="twoColumns container pt-xl-23 pb-xl-20 pt-lg-20 pb-lg-20 py-md-16 py-10">
+		<div class="twoColumns container ">
 			<div class="row mb-6">
 				<div class="col-12 col-lg-6 order-lg-1">
 					<!-- productSliderImage -->
@@ -55,16 +55,10 @@
 							<li class="mr-2"><a href="javascript:void(0);"><i class="far fa-star"></i></a></li>
 							<li>( 5 customer reviews )</li>
 						</ul> {% endcomment %}
-						{% if price_same %}
-						<p class="price d-block mb-5 text-green"><strong>{{product.product_price}}</strong></p>
-						{% else %}
-
-						<p><del>{{product.product_price}}</p><span class="d-flex"><strong
-								class="price d-block mb-5 text-green">{{product.get_mrp}}</strong>
-							<p style="margin:6px 0px 0px 10px">{{discount}}% off</p>
-						</span>
-						{% endif %}
-
+							{% if product.get_offer %}
+							<p style="margin:6px 0px 0px 10px">{{product.get_offer}}% off% off</p>
+							{% else %}
+							{% endif %}
 						<p class="mb-5">{{product.product_desc}}</p>
 						<!-- <ul class="list-unstyled productInfoDetail mb-5 overflow-hidden">
 								<li class="mb-2">Product Code: <span>FA008</span></li>
@@ -173,17 +167,17 @@
 			</div>
 		</div>
 		<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-			
-			
+
+
 			<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-			  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			  <span class="sr-only">Previous</span>
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
 			</a>
 			<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-			  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-			  <span class="sr-only">Next</span>
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
 			</a>
-		  </div>
+		</div>
 		<div class="container">
 			<div class="row">
 				<div class="col-12">

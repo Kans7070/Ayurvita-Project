@@ -3,11 +3,11 @@ from matplotlib.style import context
 from wishlist.models import WishList
 from user.models import User
 from shop.models import Product
-from django.views.decorators.cache import never_cache
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
-@never_cache
+@login_required(redirect_field_name=None, login_url='login')
 def wishlist_page(request):
     try:
         del request.session['shops']
@@ -29,7 +29,7 @@ def wishlist_page(request):
         return redirect('login')
 
 
-@never_cache
+@login_required(redirect_field_name=None, login_url='login')
 def add_to_wishlist(request, product_id):
     id = request.user.id
     user = User.objects.get(id=id)
@@ -44,7 +44,7 @@ def add_to_wishlist(request, product_id):
 
 
 
-@never_cache
+@login_required(redirect_field_name=None, login_url='login')
 def remove_wishlist(request,product_id):
     id = request.user.id
     user = User.objects.get(id=id)
