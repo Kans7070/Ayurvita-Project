@@ -131,7 +131,8 @@ def add_product(request):
             return redirect('add_product')
     form = AddProduct()
     context = {
-        'form': form
+        'form': form,
+        'title':'Add products'
     }
     return render(request, 'admin_pages/form.html', context)
 
@@ -149,7 +150,7 @@ def edit_product(request, id):
     form = ProductUpdate(instance=product)
     context = {
         'form': form,
-        'id': id
+        'title':'Edit products'
     }
     return render(request, 'admin_pages/form.html', context)
 
@@ -177,7 +178,8 @@ def add_category(request):
             messages.error(request, "product invalid")
             return redirect('add_category')
     context = {
-        'form': form
+        'form': form,
+        'title':'Add category'
     }
     return render(request, 'admin_pages/form.html', context)
 
@@ -204,7 +206,7 @@ def edit_category(request, id):
             return redirect('admin_category')
     context = {
         'form': form,
-        'id': id
+        'title':'Edit Category'
     }
     return render(request, 'admin_pages/form.html', context)
 
@@ -246,7 +248,7 @@ def edit_product_offers(request, id):
             return redirect('offers')
     context = {
         'form': form,
-        'id': id
+        'title':'Edit product'
     }
     return render(request, 'admin_pages/form.html', context)
 
@@ -265,7 +267,7 @@ def edit_category_offers(request, id):
             return redirect('offers')
     context = {
         'form': form,
-        'id': id
+        'title':'Edit Category'
     }
     return render(request, 'admin_pages/form.html', context)
 
@@ -290,7 +292,8 @@ def add_product_offer(request):
                 messages.error(request, "offer is not added")
                 return redirect('add_product_offer')
     context = {
-        'form': form
+        'form': form,
+        'title':'Add Product Offers'
     }
     return render(request, 'admin_pages/form.html', context)
 
@@ -315,7 +318,8 @@ def add_category_offer(request):
                 messages.error(request, "form is not valid")
                 return redirect('add_category_offer')
     context = {
-        'form': form
+        'form': form,
+        'title':'Add Category Offer'
     }
     return render(request, 'admin_pages/form.html', context)
 
