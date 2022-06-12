@@ -13,8 +13,11 @@ from django.contrib.auth.decorators import login_required
 
 
 def admin_login(request):
-    if not request.user.is_admin:
-        return redirect(home)
+    try:
+        if not request.user.is_admin:
+            return redirect(home)
+    except:
+        pass                    
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
