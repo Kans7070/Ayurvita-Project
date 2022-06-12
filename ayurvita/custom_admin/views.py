@@ -1,50 +1,52 @@
-from calendar import c
 from django.shortcuts import render, redirect
+from user.views import home
 from user.models import User
 from shop.models import Product
 from django.contrib import auth, messages
 from category.models import Category
-from .form import ProductUpdate,AddProduct,AddCategoryForm,EditCategoryForm,AddCategoryOfferForm,AddProductOfferForm
+from .form import ProductUpdate, AddProduct, AddCategoryForm, EditCategoryForm, AddCategoryOfferForm, AddProductOfferForm
 from order.models import OrderHistory
-from offers.models import ProductOffer,CategoryOffer
+from offers.models import ProductOffer, CategoryOffer
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 
+@login_required(redirect_field_name=None, login_url='admin_login')
 def admin_login(request):
-    if request.session.has_key('admin'):
-        return redirect('admin')
-    else:
-        if request.method == 'POST':
-            email = request.POST['email']
-            password = request.POST['password']
-            
-            admin = auth.authenticate(
-                username=email, password=password)
-
-            if admin is not None:
-                if admin.is_admin:
-                    auth.login(request, admin)
-                    request.session['admin'] = admin
-                    return redirect('admin')
-                else:
-                    messages.error(request,'Invalid credentials')
-                    return redirect('admin_login')
+    if not request.user.is_admin:
+        return redirect(home)
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        admin = auth.authenticate(
+            username=email, password=password)
+        if admin is not None:
+            if admin.is_admin:
+                auth.login(request, admin)
+                request.session['admin'] = admin.id
+                return redirect('admin')
             else:
                 messages.error(request, 'Invalid credentials')
                 return redirect('admin_login')
         else:
-            return render(request, 'admin_login.html')
-
-
-def admin(request):
-    if request.user.is_authenticated:
-        return render(request, 'admin.html')
+            messages.error(request, 'Invalid credentials')
+            return redirect('admin_login')
     else:
-        return redirect('admin_login')
+        return render(request, 'admin_login.html')
 
 
+@login_required(redirect_field_name=None, login_url='admin_login')
+def admin(request):
+    if not request.user.is_admin:
+        return redirect(home)
+    return render(request, 'admin.html')
+
+
+@login_required(redirect_field_name=None, login_url='admin_login')
 def users(request):
+    if not request.user.is_admin:
+        return redirect(home)
     user = User.objects.all()
     context = {
         'user': user
@@ -52,7 +54,10 @@ def users(request):
     return render(request, 'admin_pages/Users.html', context)
 
 
+@login_required(redirect_field_name=None, login_url='admin_login')
 def product(request):
+    if not request.user.is_admin:
+        return redirect(home)
     products = Product.objects.all()
     context = {
         'product': products
@@ -60,90 +65,116 @@ def product(request):
     return render(request, 'admin_pages/product.html', context)
 
 
+@login_required(redirect_field_name=None, login_url='admin_login')
 def admin_logout(request):
+    if not request.user.is_admin:
+        return redirect(home)
     auth.logout(request)
     return redirect('admin')
 
 
+@login_required(redirect_field_name=None, login_url='admin_login')
 def admin_category(request):
+    if not request.user.is_admin:
+        return redirect(home)
     CategoryList = Category.objects.all()
     context = {
-        'CategoryList' : CategoryList
+        'CategoryList': CategoryList
     }
     return render(request, 'admin_pages/category.html', context)
 
 
-def user_view(request,id):
-    users=User.objects.get(id=id)
+@login_required(redirect_field_name=None, login_url='admin_login')
+def user_view(request, id):
+    if not request.user.is_admin:
+        return redirect(home)
+    users = User.objects.get(id=id)
     context = {
-        'user':users
+        'user': users
     }
     return render(request, 'admin_pages/profile.html', context)
 
 
-def user_block(request,id):
-    user=User.objects.get(id=id)
-    user.is_active=False
+@login_required(redirect_field_name=None, login_url='admin_login')
+def user_block(request, id):
+    if not request.user.is_admin:
+        return redirect(home)
+    user = User.objects.get(id=id)
+    user.is_active = False
     user.save()
     return redirect('users')
 
 
-def user_unblock(request,id):
-    user=User.objects.get(id=id)
-    user.is_active=True
+@login_required(redirect_field_name=None, login_url='admin_login')
+def user_unblock(request, id):
+    if not request.user.is_admin:
+        return redirect(home)
+    user = User.objects.get(id=id)
+    user.is_active = True
     user.save()
     return redirect('users')
 
 
+@login_required(redirect_field_name=None, login_url='admin_login')
 def add_product(request):
-    form=AddProduct()
-    context={
-        'form':form
+    if not request.user.is_admin:
+        return redirect(home)
+    form = AddProduct()
+    context = {
+        'form': form
     }
     if request.method == 'POST':
-        form=AddProduct(request.POST,request.FILES)
+        form = AddProduct(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('product')
         else:
             messages.error(request, "product invalid")
             return redirect('add_product')
-    return render(request, 'admin_pages/add_product.html',context)
+    return render(request, 'admin_pages/add_product.html', context)
 
 
-
-def edit_product(request,id):
-    form=ProductUpdate(request.POST)
-    product=Product.objects.get(id=id)
-    form=ProductUpdate(instance=product)
+@login_required(redirect_field_name=None, login_url='admin_login')
+def edit_product(request, id):
+    if not request.user.is_admin:
+        return redirect(home)
+    form = ProductUpdate(request.POST)
+    product = Product.objects.get(id=id)
+    form = ProductUpdate(instance=product)
     context = {
         'form': form,
-        'id' : id
+        'id': id
     }
     if request.method == 'POST':
         form = ProductUpdate(request.POST, request.FILES, instance=product)
-        
+
         if form.is_valid():
-            
+
             form.save()
             return redirect('product')
 
     return render(request, 'admin_pages/edit_product.html', context)
 
 
-def delete_product(request,id):
-    product=Product.objects.get(id=id)
+@login_required(redirect_field_name=None, login_url='admin_login')
+def delete_product(request, id):
+    if not request.user.is_admin:
+        return redirect(home)
+    product = Product.objects.get(id=id)
     product.delete()
     return redirect('product')
 
 
+@login_required(redirect_field_name=None, login_url='admin_login')
 def add_category(request):
-    form=AddCategoryForm()
-    context={
-        'form':form
+    if not request.user.is_admin:
+        return redirect(home)
+    form = AddCategoryForm()
+    context = {
+        'form': form
     }
     if request.method == 'POST':
-        form=AddCategoryForm(request.POST)
+        form = AddCategoryForm(request.POST)
 
         if form.is_valid():
             form.save()
@@ -151,100 +182,122 @@ def add_category(request):
         else:
             messages.error(request, "product invalid")
             return redirect('add_category')
-    return render(request, 'admin_pages/add_category.html',context)
+    return render(request, 'admin_pages/add_category.html', context)
 
 
-def delete_category(request,id):
-    product=Category.objects.get(id=id)
+@login_required(redirect_field_name=None, login_url='admin_login')
+def delete_category(request, id):
+    if not request.user.is_admin:
+        return redirect(home)
+    product = Category.objects.get(id=id)
     product.delete()
     return redirect('admin_category')
 
 
-def edit_category(request,id):
-    form=EditCategoryForm(request.POST)
-    category=Category.objects.get(id=id)
-    form=EditCategoryForm(instance=category)
+@login_required(redirect_field_name=None, login_url='admin_login')
+def edit_category(request, id):
+    if not request.user.is_admin:
+        return redirect(home)
+    form = EditCategoryForm(request.POST)
+    category = Category.objects.get(id=id)
+    form = EditCategoryForm(instance=category)
     context = {
         'form': form,
-        'id' : id
+        'id': id
     }
     if request.method == 'POST':
         form = EditCategoryForm(request.POST, instance=category)
-        
+
         if form.is_valid():
-            
+
             form.save()
             return redirect('admin_category')
 
     return render(request, 'admin_pages/edit_category.html', context)
 
 
+@login_required(redirect_field_name=None, login_url='admin_login')
 def orders_history(request):
-    orders=OrderHistory.objects.all()
-    context={
+    if not request.user.is_admin:
+        return redirect(home)
+    orders = OrderHistory.objects.all()
+    context = {
         "orders": orders
     }
-    return render(request, 'admin_pages/orders_history.html',context)
+    return render(request, 'admin_pages/orders_history.html', context)
 
 
+@login_required(redirect_field_name=None, login_url='admin_login')
 def offers(request):
-    product_offers=ProductOffer.objects.all()
-    category_offers=CategoryOffer.objects.all()
-    context={
+    if not request.user.is_admin:
+        return redirect(home)
+    product_offers = ProductOffer.objects.all()
+    category_offers = CategoryOffer.objects.all()
+    context = {
         "product_offers": product_offers,
         "category_offers": category_offers
     }
-    return render(request, 'admin_pages/offers.html',context)
+    return render(request, 'admin_pages/offers.html', context)
 
 
-def edit_product_offers(request,id):
-    form=AddProductOfferForm(request.POST)
-    product_offer=ProductOffer.objects.get(id=id)
-    form=AddProductOfferForm(instance=product_offer)
+@login_required(redirect_field_name=None, login_url='admin_login')
+def edit_product_offers(request, id):
+    if not request.user.is_admin:
+        return redirect(home)
+    form = AddProductOfferForm(request.POST)
+    product_offer = ProductOffer.objects.get(id=id)
+    form = AddProductOfferForm(instance=product_offer)
     context = {
         'form': form,
-        'id' : id
+        'id': id
     }
     if request.method == 'POST':
         form = AddProductOfferForm(request.POST, instance=product_offer)
-        
+
         if form.is_valid():
-            
+
             form.save()
             return redirect('offers')
 
     return render(request, 'admin_pages/edit_product_offer.html', context)
 
 
-def edit_category_offers(request,id):
-    form=AddCategoryOfferForm(request.POST)
-    category_offer=CategoryOffer.objects.get(id=id)
-    form=AddCategoryOfferForm(instance=category_offer)
+@login_required(redirect_field_name=None, login_url='admin_login')
+def edit_category_offers(request, id):
+    if not request.user.is_admin:
+        return redirect(home)
+    form = AddCategoryOfferForm(request.POST)
+    category_offer = CategoryOffer.objects.get(id=id)
+    form = AddCategoryOfferForm(instance=category_offer)
     context = {
         'form': form,
-        'id' : id
+        'id': id
     }
     if request.method == 'POST':
         form = AddCategoryOfferForm(request.POST, instance=category_offer)
-        
+
         if form.is_valid():
-            
+
             form.save()
             return redirect('offers')
 
     return render(request, 'admin_pages/edit_category_offer.html', context)
 
 
+@login_required(redirect_field_name=None, login_url='admin_login')
 def add_product_offer(request):
-    form=AddProductOfferForm()
-    context={
-        'form':form
+    if not request.user.is_admin:
+        return redirect(home)
+    form = AddProductOfferForm()
+    context = {
+        'form': form
     }
     if request.method == 'POST':
-        form=AddProductOfferForm(request.POST)
-        product=request.POST['product']
+        form = AddProductOfferForm(request.POST)
+        product = request.POST['product']
         if ProductOffer.objects.filter(product=product).exists():
-            messages.error(request,"offer for this product is already available")
+            messages.error(
+                request, "offer for this product is already available")
             return redirect('add_product_offer')
         else:
             if form.is_valid():
@@ -253,21 +306,23 @@ def add_product_offer(request):
             else:
                 messages.error(request, "offer is not added")
                 return redirect('add_product_offer')
-    return render(request, 'admin_pages/add_product_offer.html',context)
-   
+    return render(request, 'admin_pages/add_product_offer.html', context)
 
 
-
+@login_required(redirect_field_name=None, login_url='admin_login')
 def add_category_offer(request):
-    form=AddCategoryOfferForm()
-    context={
-        'form':form
+    if not request.user.is_admin:
+        return redirect(home)
+    form = AddCategoryOfferForm()
+    context = {
+        'form': form
     }
     if request.method == 'POST':
-        form=AddCategoryOfferForm(request.POST)
+        form = AddCategoryOfferForm(request.POST)
         category = request.POST['category']
         if CategoryOffer.objects.filter(category=category).exists():
-            messages.error(request, "offer for this category is already exists")
+            messages.error(
+                request, "offer for this category is already exists")
             return redirect('add_category_offer')
         else:
             if form.is_valid():
@@ -277,20 +332,21 @@ def add_category_offer(request):
                 messages.error(request, "form is not valid")
                 return redirect('add_category_offer')
     else:
-        return render(request, 'admin_pages/add_category_offer.html',context)
+        return render(request, 'admin_pages/add_category_offer.html', context)
 
 
-def delete_offer(request,id):
-    try:     
+@login_required(redirect_field_name=None, login_url='admin_login')
+def delete_offer(request, id):
+    if not request.user.is_admin:
+        return redirect(home)
+    try:
         product = Product.objects.get(id=id)
-        product_offer=ProductOffer.objects.get(product=product)
-        product.is_deleted=True
+        product_offer = ProductOffer.objects.get(product=product)
+        product.is_deleted = True
         product_offer.save()
     except:
-        category= Category.objects.get(id=id)
-        category_offer=CategoryOffer.objects.get(category=category)
-        category_offer.is_deleted=True
+        category = Category.objects.get(id=id)
+        category_offer = CategoryOffer.objects.get(category=category)
+        category_offer.is_deleted = True
         category_offer.save()
     return redirect('offers')
-
-

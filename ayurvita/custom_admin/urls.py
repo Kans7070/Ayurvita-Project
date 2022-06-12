@@ -17,9 +17,6 @@ urlpatterns =[
     path('offers',views.offers,name='offers'),
     path('add_product_offer',views.add_product_offer,name='add_product_offer'),
     path('add_category_offer',views.add_category_offer,name='add_category_offer'),
-
-
-
     path('user_view/<int:id>',views.user_view,name='user_view'),
     path('user_block/<int:id>',views.user_block,name='user_block'),
     path('user_unblock/<int:id>',views.user_unblock,name='user_unblock'),
