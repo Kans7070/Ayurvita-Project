@@ -30,17 +30,20 @@
 				<div class="col-12 col-lg-6 order-lg-1">
 					<!-- productSliderImage -->
 					<div class="productSliderImage mb-lg-0 mb-4">
-						<div>
-							<img src="{{product.product_image1.url}}" alt="image description" class="img-fluid w-100">
-						</div>
-						<div>
-							<img src="{{product.product_image2.url}}" alt="image description" class="img-fluid w-100">
-						</div>
-						{% if product.profile_img3 %}
-						<div>
-							<img src="{{product.product_image2.url}}" alt="image description" class="img-fluid w-100">
-						</div>
-						{% endif %}
+						
+
+							<div>
+								<img src="{{product.product_image1.url}}" alt="image description" class="img-fluid w-100">
+							</div>
+							<div>
+								<img src="{{product.product_image2.url}}" alt="image description" class="img-fluid w-100">
+							</div>
+							{% if product.profile_img3 %}
+							<div>
+								<img src="{{product.product_image2.url}}" alt="image description" class="img-fluid w-100">
+							</div>
+							{% endif %}
+						
 					</div>
 				</div>
 				<div class="col-12 col-lg-6 order-lg-3">

@@ -54,40 +54,42 @@
 				</header>
 				<div class="col-12 p-0 overflow-hidden d-flex flex-wrap">
 					<!-- featureCol -->
-					{% for products in product %}
+					{% for product in products %}
 								<div class="col-12 col-sm-6 col-lg-3 featureCol mb-7">
 									<div class="border" >
 										<div class="imgHolder position-relative w-100 overflow-hidden">
-											<img src="{{products.product_image1.url}}" alt="image description" class="img-fluid " style='height:270px;width:100%'>
+											<a href="{% url 'shop_detail' product.id %}">
+												<img src="{{product.product_image1.url}}" alt="image description" class="img-fluid " style='height:270px;width:auto'>
+											</a>
 											<ul class="list-unstyled postHoverLinskList d-flex justify-content-center m-0">
 												<li class="mr-2 overflow-hidden">
 												{% if wishlist_item %}
 												{% for items in wishlist_item %}
-												{% if items.product.id == products.id %}
-												<a href="{% url 'remove_wishlist' products.id %}" style="height:32px;padding-top: 6px;">
+												{% if items.product.id == product.id %}
+												<a href="{% url 'remove_wishlist' product.id %}" style="height:32px;padding-top: 6px;">
 													<img src="{% static 'images/favorite_black_18dp.svg'%}" alt="" style="height:16px;width: 16px;">
 												</a>
 												
 												{% else %}
-												<a href="{% url 'add_to_wishlist' products.id %}" class="icon-heart d-block"> 
+												<a href="{% url 'add_to_wishlist' product.id %}" class="icon-heart d-block"> 
 												</a>
 												{% endif %}
 
 												{% endfor %}
 												{% else %}
 												
-													<a href="{% url 'add_to_wishlist' products.id %}" class="icon-heart d-block"> 
+													<a href="{% url 'add_to_wishlist' product.id %}" class="icon-heart d-block"> 
 													</a>
 												{% endif %}
 												</li>
-												<li class="mr-2 overflow-hidden"><a href="{% url 'add_to_cart' products.id %}" class="icon-cart d-block"></a></li>
-												<li class="mr-2 overflow-hidden"><a href="{% url 'shop_detail' products.id %}" class="icon-eye d-block"></a></li>
+												<li class="mr-2 overflow-hidden"><a href="{% url 'add_to_cart' product.id %}" class="icon-cart d-block"></a></li>
+												<li class="mr-2 overflow-hidden"><a href="{% url 'shop_detail' product.id %}" class="icon-eye d-block"></a></li>
 												<li class="overflow-hidden"><a href="javascript:void(0);" class="icon-arrow d-block"></a></li>
 											</ul>
 										</div>
 										<div class="text-center py-5 px-4">
-											<span class="title d-block mb-2"><a href="{% url 'shop_detail' products.id %}">{{products.product_name}}</a></span>
-											<span class="price d-block fwEbold"><del></del>{{products.get_mrp}}</span>
+											<span class="title d-block mb-2"><a href="{% url 'shop_detail' product.id %}">{{product.product_name}}</a></span>
+											<span class="price d-block fwEbold"><del></del>{{product.get_mrp}}</span>
 											
 											<span class="hotOffer fwEbold text-uppercase text-white position-absolute d-block">HOT</span>
 											

@@ -45,17 +45,11 @@ def shop_detail(request, id):
         del request.session['count']
     except:
         pass
-    try:
-        cart_item = CartItem.objects.filter(user=request.user)
-        for products in cart_item:
-            if products.product.id == product.id:
-                go_to_cart = True
-                break
-            else:
-                go_to_cart = False
-    except:
-        cart_item = None
-        go_to_cart = False
+    product= Product.objects.get(id=id)
+    if CartItem.objects.filter(user=request.user,product=product).exists():
+        go_to_cart = True
+    else:
+        go_to_cart = False       
     product = Product.objects.get(id=id)
     context = {
         'product': product,

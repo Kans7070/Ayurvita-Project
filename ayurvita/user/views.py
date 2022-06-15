@@ -26,7 +26,7 @@ def create_user(request):
 
 
 def home(request):
-    product = Product.objects.all()
+    products = Product.objects.all()
     try:
         cart_item = CartItem.objects.filter(user_id=request.user.id)
     except:
@@ -36,7 +36,7 @@ def home(request):
     except:
         wishlist_item = ''
     context = {
-        'product': product,
+        'products': products,
         'cart_item': cart_item,
         'wishlist_item': wishlist_item,
     }
