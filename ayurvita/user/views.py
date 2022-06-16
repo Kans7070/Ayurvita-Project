@@ -91,7 +91,7 @@ def otp(request):
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == 'POST':
-        if verify(request):
+        if verify(request.session['phone_number'], request.POST['otp']):
             create_user(request)
             return redirect('login')
         else:
