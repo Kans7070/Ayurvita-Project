@@ -35,7 +35,6 @@ class MyUserManager(BaseUserManager):
             first_name=first_name,
             last_name=last_name,
             phone_number=phone_number,
-
         )
         user.is_admin = True
         user.is_active = True

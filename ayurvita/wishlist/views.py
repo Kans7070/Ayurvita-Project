@@ -23,7 +23,7 @@ def wishlist_page(request):
         'wishlist_item': wishlist_item
     }
     if request.user.is_authenticated:
-        
+
         return render(request, 'wishlist.html', context)
     else:
         return redirect('login')
@@ -35,17 +35,15 @@ def add_to_wishlist(request, product_id):
     user = User.objects.get(id=id)
     product = Product.objects.get(id=product_id)
     wishlist_item = WishList.objects.create(
-        product=product,user=request.user)
+        product=product, user=request.user)
     wishlist_item.save()
     if request.session.has_key('shop-detail'):
-        return redirect('shop_detail',product_id )
+        return redirect('shop_detail', product_id)
     return redirect('shop')
 
 
-
-
 @login_required(redirect_field_name=None, login_url='login')
-def remove_wishlist(request,product_id):
+def remove_wishlist(request, product_id):
     id = request.user.id
     user = User.objects.get(id=id)
     product = Product.objects.get(id=product_id)
