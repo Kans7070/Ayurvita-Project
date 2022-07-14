@@ -1,11 +1,9 @@
-from ast import Break
-from math import prod
 from django.shortcuts import render, redirect
-from shop.models import Product, ShopWelcome
+from shop.models import Product
 from category.models import Category
 from cart.models import CartItem
 from wishlist.models import WishList
-from offers.models import ProductOffer, CategoryOffer
+
 
 
 # Create your views here.
@@ -45,11 +43,11 @@ def shop_detail(request, id):
         del request.session['count']
     except:
         pass
-    product= Product.objects.get(id=id)
-    if CartItem.objects.filter(user=request.user,product=product).exists():
+    product = Product.objects.get(id=id)
+    if CartItem.objects.filter(user=request.user, product=product).exists():
         go_to_cart = True
     else:
-        go_to_cart = False       
+        go_to_cart = False
     product = Product.objects.get(id=id)
     context = {
         'product': product,

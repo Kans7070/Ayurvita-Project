@@ -1,6 +1,4 @@
-from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from numpy import product
 from .models import OrderHistory
 from cart.models import CartItem
 from address.models import Address

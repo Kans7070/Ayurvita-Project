@@ -86,7 +86,7 @@
 												<span class="title d-block mb-2"><a href="{% url 'shop_detail' product.id %}">{{product.product_name}}</a></span>
 												<span class="price d-block fwEbold"><del></del>{{product.get_mrp}}
 												{% if product.get_offer %}
-												- {{product.get_offer}}% off
+												- <span style="color:green">{{product.get_offer}}% off</span>
 												{% else %}
 												{% endif %}
 												</span>

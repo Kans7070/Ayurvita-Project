@@ -8,10 +8,8 @@ class MyUserManager(BaseUserManager):
     def create_user(self, first_name, last_name, phone_number, username, email, password=None, city=None, state=None):
         if not email:
             raise ValueError('User must have an email address ')
-
         if not username:
             raise ValueError('User must have an username')
-
         user = self.model(
             email=self.normalize_email(email),
             username=username,
@@ -20,7 +18,6 @@ class MyUserManager(BaseUserManager):
             phone_number=phone_number,
             city=city,
             state=state,
-
         )
         user.is_active = True
         user.set_password(password)
